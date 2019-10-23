@@ -1,6 +1,10 @@
-import java.io.IOException;
+package Presentation;
 
-public class Menus {
+import Business.ESS_Trading_Platform;
+
+public class CommandLineView {
+
+    private ESS_Trading_Platform facade;
 
     public static String menuInicial() {
         return ("**********************\n"
@@ -76,8 +80,6 @@ public class Menus {
                 + "*******************************");
     }
 
-
-    public static void main(String[] args)throws IOException{
-        System.out.println(terminarCFD());
+    public void start() {
     }
 }
