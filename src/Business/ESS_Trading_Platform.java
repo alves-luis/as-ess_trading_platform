@@ -86,4 +86,9 @@ public class ESS_Trading_Platform {
 		throw new UnsupportedOperationException();
 	}
 
+	public double updatePlafond(int nif, double qt) {
+		// TODO - implement ESS_Trading_Platform.updatePlafond
+		throw new UnsupportedOperationException();
+	}
+
 }
