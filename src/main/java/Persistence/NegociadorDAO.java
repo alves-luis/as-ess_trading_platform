@@ -31,7 +31,7 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         Connect.close(c);
 
         return result;
