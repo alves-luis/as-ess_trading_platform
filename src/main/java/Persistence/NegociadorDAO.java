@@ -31,6 +31,8 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
         catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        Connect.close(c);
 
         return result;
     }
@@ -67,6 +69,8 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        Connect.close(c);
 
         return result;
     }
@@ -114,6 +118,8 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
             e.printStackTrace();
         }
 
+        Connect.close(c);
+
         return null;
     }
 
@@ -148,6 +154,8 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        Connect.close(c);
 
         return null;
     }
