@@ -1,5 +1,7 @@
 package Persistence;
 
+import Business.Negociador;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,7 +15,7 @@ public class CreateBD {
         Statement s = null;
         try {
             s = c.createStatement();
-            
+
             s.executeUpdate("drop table if exists Ativo cascade;");
             s.executeUpdate("create table Ativo (Id int primary key, Nome varchar, ValorPorUnidade float);");
 
@@ -44,6 +46,11 @@ public class CreateBD {
             s.executeUpdate("create table CFD (Id int primary key, Data timestamp, UnidadesDeAtivo float," +
                     "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, IdAtivo int references ativo(id) on delete cascade, NifNegociador int references Negociador(nif)" +
                     ", Aberto bit);");
+
+            s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");
+
+            NegociadorDAO t = new NegociadorDAO();
+            System.out.println(t.put(274129914,new Negociador(274129914,"Luís Alves","luismig.alves@hotmail.com","12345",0)).toString());
 
         } catch (SQLException e) {
             e.printStackTrace();

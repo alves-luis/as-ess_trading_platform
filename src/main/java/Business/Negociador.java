@@ -1,5 +1,7 @@
 package Business;
 
+import Persistence.CFDNegociadorDao;
+
 import java.util.List;
 
 public class Negociador {
@@ -11,9 +13,19 @@ public class Negociador {
 	private List<CFD> cfds;
 
     public Negociador(int nif, String nome, String email, String password, double saldo) {
+    	this.nif = nif;
+    	this.nome = nome;
+    	this.email = email;
+    	this.password = password;
+    	this.saldo = saldo;
+    	this.cfds = new CFDNegociadorDao();
     }
 
-    public double adicionarSaldo(double valor) {
+	public Negociador() {
+
+	}
+
+	public double adicionarSaldo(double valor) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -45,6 +57,10 @@ public class Negociador {
 		this.password = password;
 	}
 
+	public String getPassword() {
+    	return this.password;
+	}
+
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
 	}
@@ -55,5 +71,15 @@ public class Negociador {
 
 	public boolean podeGastar(double valor) {
     	throw new UnsupportedOperationException();
+	}
+
+	public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("Nif: ").append(this.nif).append("\n");
+    	sb.append("Nome: ").append(this.nome).append("\n");
+		sb.append("Email: ").append(this.email).append("\n");
+		sb.append("Password: ").append(this.password).append("\n");
+		sb.append("Saldo: ").append(this.saldo).append("\n");
+		return sb.toString();
 	}
 }
