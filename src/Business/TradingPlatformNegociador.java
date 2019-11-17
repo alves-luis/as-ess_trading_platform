@@ -3,7 +3,7 @@ package Business;
 import java.util.Collection;
 import java.util.Map;
 
-public class TradingPlatformNegociador {
+public class TradingPlatformNegociador implements FacadeNegociador {
 	public Map<Integer,Ativo> ativos;
 	public Map<Integer,CFD> cfds;
 	public Map<Integer,Negociador> negociadores;

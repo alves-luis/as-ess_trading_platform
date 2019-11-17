@@ -1,10 +1,12 @@
-package Business;
+package Persistence;
+
+import Business.Negociador;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class NegociadorDAO implements Map<Integer,Negociador> {
+public class NegociadorDAO implements Map<Integer, Negociador> {
     @Override
     public int size() {
         return 0;

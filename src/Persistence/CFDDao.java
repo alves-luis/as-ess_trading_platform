@@ -3,125 +3,67 @@ package Persistence;
 import Business.CFD;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
-public class CFDDao implements List<CFD> {
-	private Integer nifNegociador;
+public class CFDDao implements Map<Integer, CFD> {
+    @Override
+    public int size() {
+        return 0;
+    }
 
-	@Override
-	public int size() {
-		return 0;
-	}
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return false;
-	}
+    @Override
+    public boolean containsKey(Object o) {
+        return false;
+    }
 
-	@Override
-	public boolean contains(Object o) {
-		return false;
-	}
+    @Override
+    public boolean containsValue(Object o) {
+        return false;
+    }
 
-	@Override
-	public Iterator<CFD> iterator() {
-		return null;
-	}
+    @Override
+    public CFD get(Object o) {
+        return null;
+    }
 
-	@Override
-	public Object[] toArray() {
-		return new Object[0];
-	}
+    @Override
+    public CFD put(Integer integer, CFD cfd) {
+        return null;
+    }
 
-	@Override
-	public <T> T[] toArray(T[] ts) {
-		return null;
-	}
+    @Override
+    public CFD remove(Object o) {
+        return null;
+    }
 
-	@Override
-	public boolean add(CFD cfd) {
-		return false;
-	}
+    @Override
+    public void putAll(Map<? extends Integer, ? extends CFD> map) {
 
-	@Override
-	public boolean remove(Object o) {
-		return false;
-	}
+    }
 
-	@Override
-	public boolean containsAll(Collection<?> collection) {
-		return false;
-	}
+    @Override
+    public void clear() {
 
-	@Override
-	public boolean addAll(Collection<? extends CFD> collection) {
-		return false;
-	}
+    }
 
-	@Override
-	public boolean addAll(int i, Collection<? extends CFD> collection) {
-		return false;
-	}
+    @Override
+    public Set<Integer> keySet() {
+        return null;
+    }
 
-	@Override
-	public boolean removeAll(Collection<?> collection) {
-		return false;
-	}
+    @Override
+    public Collection<CFD> values() {
+        return null;
+    }
 
-	@Override
-	public boolean retainAll(Collection<?> collection) {
-		return false;
-	}
-
-	@Override
-	public void clear() {
-
-	}
-
-	@Override
-	public CFD get(int i) {
-		return null;
-	}
-
-	@Override
-	public CFD set(int i, CFD cfd) {
-		return null;
-	}
-
-	@Override
-	public void add(int i, CFD cfd) {
-
-	}
-
-	@Override
-	public CFD remove(int i) {
-		return null;
-	}
-
-	@Override
-	public int indexOf(Object o) {
-		return 0;
-	}
-
-	@Override
-	public int lastIndexOf(Object o) {
-		return 0;
-	}
-
-	@Override
-	public ListIterator<CFD> listIterator() {
-		return null;
-	}
-
-	@Override
-	public ListIterator<CFD> listIterator(int i) {
-		return null;
-	}
-
-	@Override
-	public List<CFD> subList(int i, int i1) {
-		return null;
-	}
+    @Override
+    public Set<Entry<Integer, CFD>> entrySet() {
+        return null;
+    }
 }
