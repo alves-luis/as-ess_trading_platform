@@ -1,5 +1,10 @@
 package Business;
 
+import Business.Ativos.Ativo;
+import Business.Exceptions.CFDNaoExisteException;
+import Business.Exceptions.NegociadorNaoExisteException;
+import Business.Exceptions.NegociadorNaoPossuiSaldoSuficienteException;
+
 import java.util.Collection;
 
 public interface FacadeNegociador {
@@ -11,9 +16,9 @@ public interface FacadeNegociador {
 
     Ativo getAtivo(int id);
 
-    CFD registarCFD(int idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo);
+    CFD registarCFD(int idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo) throws NegociadorNaoExisteException, NegociadorNaoPossuiSaldoSuficienteException;
 
-    double fecharCFD(int id);
+    double fecharCFD(int id) throws CFDNaoExisteException;
 
     Collection<CFD> getCFDs(int nifNegociador);
 

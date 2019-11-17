@@ -1,6 +1,6 @@
 package Persistence;
 
-import Business.Ativo;
+import Business.Ativos.Ativo;
 import Business.AtivoFactory;
 
 import java.util.Collection;

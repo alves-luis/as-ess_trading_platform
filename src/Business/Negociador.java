@@ -8,13 +8,16 @@ public class Negociador {
 	private String email;
 	private String password;
 	private double saldo;
-	public List<CFD> cfds;
+	private List<CFD> cfds;
 
-	public double adicionarSaldo(double valor) {
+    public Negociador(int nif, String nome, String email, String password, double saldo) {
+    }
+
+    public double adicionarSaldo(double valor) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean verificarCredenciais(String email, String password) {
+	public boolean verificarCredenciais(int nif, String password) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -48,5 +51,9 @@ public class Negociador {
 
 	public double getSaldo() {
 		return this.saldo;
+	}
+
+	public boolean podeGastar(double valor) {
+    	throw new UnsupportedOperationException();
 	}
 }

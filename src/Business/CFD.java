@@ -11,6 +11,19 @@ public abstract class CFD {
 	private Double limiteInf;
 	private int idAtivo;
 	private int nifNegociador;
+	private boolean aberto;
+
+	public CFD(int id, double unidadesDeCompra, double valor, Double limiteMin, Double limiteMax, int ativoId, int nifNegociador) {
+		this.id = id;
+		this.data = LocalDateTime.now();
+		this.unidadesDeAtivo = unidadesDeCompra;
+		this.valorPorUnidadeNaCompra = valor;
+		this.limiteInf = limiteMin;
+		this.limitSup = limiteMax;
+		this.idAtivo = ativoId;
+		this.nifNegociador = nifNegociador;
+		this.aberto = true;
+	}
 
 	public double getValorInvestido() {
 		throw new UnsupportedOperationException();
@@ -54,5 +67,18 @@ public abstract class CFD {
 
 	public int getNifNegociador() {
 		return this.nifNegociador;
+	}
+
+	/**
+	 * @return True se o CFD se encontrava aberto e o seu estado foi alterado para fechado. Falso em todos
+	 * os restantes casos
+	 */
+	public boolean fecharCFD() {
+		if (this.aberto) {
+			this.aberto = false;
+			return true;
+		}
+		else
+			return false;
 	}
 }

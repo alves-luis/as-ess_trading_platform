@@ -1,13 +1,15 @@
-package Business;
+package Business.Ativos;
 
-import java.util.ArrayList;
+import Business.Mercado;
 import Business.Observer;
 
-public abstract class Ativo {
+import java.util.List;
+
+public abstract class Ativo implements Runnable {
 	private int id;
 	private String nome;
 	private double valorPorUnidade;
-	public ArrayList<Observer> observers = new ArrayList<Observer>();
+	public List<Observer> observers;
 	public Mercado mercado;
 
 	public String toString() {
@@ -36,5 +38,9 @@ public abstract class Ativo {
 
 	public double getValorPorUnidade() {
 		return this.valorPorUnidade;
+	}
+
+	public void run() {
+		// TO DO
 	}
 }

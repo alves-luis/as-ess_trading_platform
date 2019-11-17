@@ -1,4 +1,4 @@
-package Business;
+package Business.Ativos;
 
 public class Acao extends Ativo {
 	private String empresa;

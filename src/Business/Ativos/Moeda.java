@@ -1,4 +1,6 @@
-package Business;
+package Business.Ativos;
+
+import Business.Ativos.Ativo;
 
 public class Moeda extends Ativo {
 	private String moedaA;

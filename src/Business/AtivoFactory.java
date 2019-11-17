@@ -1,6 +1,7 @@
 package Business;
 
-public interface AtivoFactory {
+import Business.Ativos.Ativo;
 
+public interface AtivoFactory {
 	Ativo getAtivo(String tipo);
 }
