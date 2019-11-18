@@ -1,5 +1,7 @@
 package Business;
 
+import java.util.Collection;
+
 public interface Observable {
 
 	boolean registerObserver(Observer o);
@@ -7,4 +9,6 @@ public interface Observable {
 	void notifyObservers();
 
 	void removeObserver(Observer o);
+
+	void setObservers(Collection<Observer> l);
 }

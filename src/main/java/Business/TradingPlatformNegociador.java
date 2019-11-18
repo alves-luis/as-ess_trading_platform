@@ -8,11 +8,12 @@ import Persistence.AtivoDAO;
 import Persistence.CFDDao;
 import Persistence.NegociadorDAO;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
 public class TradingPlatformNegociador implements FacadeNegociador {
-	private Map<Integer, Ativo> ativos;
+	private Map<String, Ativo> ativos;
 	private Map<Integer, CFD> cfds;
 	private Map<Integer, Negociador> negociadores;
 
@@ -53,7 +54,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 	 * @param id Id do ativo
 	 * @return O Ativo pretendido, ou null se não existir
 	 */
-	public Ativo getAtivo(int id) {
+	public Ativo getAtivo(String id) {
 		return this.ativos.get(id);
 	}
 
@@ -70,7 +71,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 	 * @throws NegociadorNaoPossuiSaldoSuficienteException caso se tente estabelecer um CFD mas o negociador
 	 * não possui saldo suficiente
 	 */
-	public CFD registarCFD(int idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo)
+	public CFD registarCFD(String idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo)
 			throws NegociadorNaoExisteException, NegociadorNaoPossuiSaldoSuficienteException {
 
 		if (!this.negociadores.containsKey(nifNegociador))
@@ -85,7 +86,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 
 		int id = cfds.size();
 		// by default creating long positions
-		CFD c = new Long(id, unidadesDeCompra, ativo.getValorPorUnidade(), limiteMin, limiteMax, ativo.getId(), nifNegociador);
+		CFD c = new Long(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(),limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
 		this.cfds.put(c.getId(),c);
 		return c;
 	}
@@ -99,11 +100,13 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		if (!this.cfds.containsKey(id))
 			throw new CFDNaoExisteException(id);
 
+
 		CFD c = this.cfds.get(id);
-		c.fecharCFD();
+		Ativo a = this.ativos.get(c.getIdAtivo());
+		c.fecharCFD(a.getValorPorUnidade());
 		this.cfds.put(id,c); // to update state
 
-		Ativo a = this.ativos.get(c.getIdAtivo());
+
 		double valorAtivo = a.getValorPorUnidade();
 		double saldoAAdicionar = valorAtivo * c.getUnidadesDeAtivo();
 

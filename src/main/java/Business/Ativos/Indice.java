@@ -1,9 +1,11 @@
 package Business.Ativos;
 
-import Business.Ativos.Ativo;
-
 public class Indice extends Ativo {
 	private int numEmpresas;
+
+	public Indice(String id, String nome, double vpu) {
+		super(id, nome, vpu);
+	}
 
 	public void setNumEmpresas(int numEmpresas) {
 		this.numEmpresas = numEmpresas;
@@ -11,5 +13,10 @@ public class Indice extends Ativo {
 
 	public int getNumEmpresas() {
 		return this.numEmpresas;
+	}
+
+	@Override
+	public void run() {
+
 	}
 }

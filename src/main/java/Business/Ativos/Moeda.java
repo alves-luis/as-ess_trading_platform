@@ -1,10 +1,12 @@
 package Business.Ativos;
 
-import Business.Ativos.Ativo;
-
 public class Moeda extends Ativo {
 	private String moedaA;
 	private String moedaB;
+
+	public Moeda(String id, String nome, double vpu) {
+		super(id, nome, vpu);
+	}
 
 	public void setMoedaA(String moedaA) {
 		this.moedaA = moedaA;
@@ -20,5 +22,10 @@ public class Moeda extends Ativo {
 
 	public String getMoedaB() {
 		return this.moedaB;
+	}
+
+	@Override
+	public void run() {
+
 	}
 }

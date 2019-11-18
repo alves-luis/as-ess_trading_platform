@@ -131,6 +131,9 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
             return null;
         }
 
+        if (key != negociador.getNif())
+            return null;
+
         PreparedStatement s = null;
         try {
             if (this.containsKey(key)) {

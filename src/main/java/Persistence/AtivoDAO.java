@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class AtivoDAO implements Map<Integer,Ativo>, AtivoFactory {
+public class AtivoDAO implements Map<String,Ativo>, AtivoFactory {
 
 	public Ativo getAtivo(String tipo) {
 		throw new UnsupportedOperationException();
@@ -39,7 +39,7 @@ public class AtivoDAO implements Map<Integer,Ativo>, AtivoFactory {
 	}
 
 	@Override
-	public Ativo put(Integer integer, Ativo ativo) {
+	public Ativo put(String s, Ativo ativo) {
 		return null;
 	}
 
@@ -49,7 +49,7 @@ public class AtivoDAO implements Map<Integer,Ativo>, AtivoFactory {
 	}
 
 	@Override
-	public void putAll(Map<? extends Integer, ? extends Ativo> map) {
+	public void putAll(Map<? extends String, ? extends Ativo> map) {
 
 	}
 
@@ -59,7 +59,7 @@ public class AtivoDAO implements Map<Integer,Ativo>, AtivoFactory {
 	}
 
 	@Override
-	public Set<Integer> keySet() {
+	public Set<String> keySet() {
 		return null;
 	}
 
@@ -69,7 +69,7 @@ public class AtivoDAO implements Map<Integer,Ativo>, AtivoFactory {
 	}
 
 	@Override
-	public Set<Entry<Integer, Ativo>> entrySet() {
+	public Set<Entry<String, Ativo>> entrySet() {
 		return null;
 	}
 }

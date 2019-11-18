@@ -1,26 +1,32 @@
 package Business.Ativos;
 
+import Business.IntrinioAPI;
 import Business.Mercado;
 import Business.Observer;
+import Persistence.CFDAtivoDao;
 
 import java.util.List;
 
 public abstract class Ativo implements Runnable {
-	private int id;
+	private String id;
 	private String nome;
 	private double valorPorUnidade;
-	public List<Observer> observers;
-	public Mercado mercado;
+	private List<Observer> observers;
+	private Mercado mercado;
 
-	public String toString() {
-		throw new UnsupportedOperationException();
+	public Ativo(String id, String nome, double vpu) {
+		this.id = id;
+		this.nome = nome;
+		this.valorPorUnidade = vpu;
+		this.observers = new CFDAtivoDao(id);
+		this.mercado = new IntrinioAPI();
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -40,7 +46,24 @@ public abstract class Ativo implements Runnable {
 		return this.valorPorUnidade;
 	}
 
-	public void run() {
-		// TO DO
+	public Mercado getMercado() {
+		return this.mercado;
+	}
+
+	public List<Observer> getObservers() {
+		return this.observers;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Id: ").append(id).append("\n");
+		sb.append("Nome: ").append(nome).append("\n");
+		sb.append("Valor por Unidade: ").append(valorPorUnidade).append("\n");
+		return sb.toString();
+	}
+
+	public void setObservers(List<Observer> observers) {
+		this.observers.clear();
+		this.observers.addAll(observers);
 	}
 }

@@ -14,9 +14,9 @@ public interface FacadeNegociador {
 
     Collection<Ativo> getAtivos(String tipo);
 
-    Ativo getAtivo(int id);
+    Ativo getAtivo(String id);
 
-    CFD registarCFD(int idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo) throws NegociadorNaoExisteException, NegociadorNaoPossuiSaldoSuficienteException;
+    CFD registarCFD(String idAtivo, int nifNegociador, double unidadesDeCompra, Double limiteMin, Double limiteMax, String tipo) throws NegociadorNaoExisteException, NegociadorNaoPossuiSaldoSuficienteException;
 
     double fecharCFD(int id) throws CFDNaoExisteException;
 
