@@ -23,4 +23,6 @@ public interface FacadeNegociador {
     Collection<CFD> getCFDs(int nifNegociador);
 
     double atualizarSaldo(int nif, double quantia);
+
+    boolean verificarCredenciais(int nif, String pass);
 }

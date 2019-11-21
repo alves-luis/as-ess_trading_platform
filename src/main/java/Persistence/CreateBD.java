@@ -8,11 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CreateBD {
-    public static void main(String[] args) {
-        Connection c = Connect.connect();
-        if (c == null)
-            System.out.println("Can't connect!");
-
+    private static void createRelations(Connection c) {
         Statement s = null;
         try {
             s = c.createStatement();
@@ -45,20 +41,41 @@ public class CreateBD {
 
             s.executeUpdate("drop table if exists CFD cascade;");
             s.executeUpdate("create table CFD (Id int primary key, Data timestamp, UnidadesDeAtivo float," +
-                    "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, IdAtivo varchar references ativo(id) on delete cascade, NifNegociador int references Negociador(nif)" +
+                    "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, " +
+                    "IdAtivo varchar references ativo(id) on delete cascade, NifNegociador int references Negociador(nif)" +
                     ", Aberto bit, ValorPorUnidadeNoFim float);");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void populateRelations(Connection c) {
+        Statement s = null;
+        try {
+            s = c.createStatement();
             s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");
             s.executeUpdate("insert into ativo values('AAPL', 'Apple Inc.', 82.3);");
             s.executeUpdate("insert into acao values(1, 'Apple');");
             s.executeUpdate("insert into acaoativo values(1, 'AAPL');");
             s.executeUpdate("insert into CFD values(1, '2008-01-01 00:00:01', 2, 5, null, null, 'AAPL', 274129914, b'1', null);");
-
-            Acao a = new Acao("AAPL", "Apple Inc.", 82.3, "Apple");
-            a.run();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void main(String[] args) {
+        Connection c = Connect.connect();
+        if (c == null) {
+            System.out.println("Can't connect!");
+            return;
+        }
+        createRelations(c);
+        populateRelations(c);
+        Acao a = new Acao("AAPL", "Apple Inc.", 82.3, "Apple");
+        a.run();
 
         Connect.close(c);
     }
