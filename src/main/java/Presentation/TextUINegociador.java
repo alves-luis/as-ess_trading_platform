@@ -1,11 +1,11 @@
 package Presentation;
 
+import Business.Ativos.Ativo;
+import Business.Ativos.AtivoConsts;
 import Business.FacadeNegociador;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TextUINegociador implements UINegociador {
     private final static String MENU_SEPARATOR = "-";
@@ -121,6 +121,12 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showEstabelecerCFD() {
+        List<String> options = AtivoConsts.TIPOS_DE_ATIVOS;
+        System.out.print(listOptions(options));
+        int choice = chooseOption(options.size(), options.size());
+        Collection<Ativo> ativos = this.facade.getAtivos(options.get(choice));
+        List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
+        System.out.print(listOptions(ativosAsString));
     }
 
     private void showMenuRegistar() {

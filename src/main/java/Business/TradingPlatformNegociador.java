@@ -1,5 +1,6 @@
 package Business;
 
+import Business.Ativos.Acao;
 import Business.Ativos.Ativo;
 import Business.Exceptions.CFDNaoExisteException;
 import Business.Exceptions.NegociadorNaoExisteException;
@@ -9,6 +10,8 @@ import Persistence.CFDDao;
 import Persistence.NegociadorDAO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -47,7 +50,8 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 	}
 
 	public Collection<Ativo> getAtivos(String tipo) {
-		throw new UnsupportedOperationException();
+		return new ArrayList(Arrays.asList(new Acao("1","EDP",10, "Eletricidade de Portugal"), new Acao("2","GALP",5, "Galp Energia")));
+		//throw new UnsupportedOperationException();
 	}
 
 	/**
