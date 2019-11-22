@@ -17,7 +17,7 @@ public class CFDDao implements Map<Integer, CFD> {
     public int size() {
 
         Connection c = Connect.connect();
-        if (c==null){
+        if (c == null){
             System.out.println("Can't connect!");
             return 0;
         }
@@ -109,9 +109,9 @@ public class CFDDao implements Map<Integer, CFD> {
             double uniAtivo = resultSet.getDouble("unidadesdeativo");
             double valorUnidadeCompra = resultSet.getDouble("valorporunidadenacompra");
             double limiteS = resultSet.getDouble("limiteSup");
-            double limiteI = resultSet.getDouble("limitInf");
+            double limiteI = resultSet.getDouble("limiteInf");
             boolean aberto = resultSet.getBoolean("aberto");
-            int nifNeg = resultSet.getInt("nif");
+            int nifNeg = resultSet.getInt("nifNegociador");
             String idAtivo = resultSet.getString("idAtivo");
             LocalDateTime data = date.toLocalDateTime();
 
@@ -155,7 +155,7 @@ public class CFDDao implements Map<Integer, CFD> {
         PreparedStatement s = null;
         try{
             if(this.containsKey(integer)){
-                s=c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, nifnegociador = ?,  aberto = ?, valorporunidadenofim = ? where id = ?;");
+                s=c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = b'?', valorporunidadenofim = ? where id = ?;");
                 s.setInt(11, cfd.getId());
             }
             else

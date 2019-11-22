@@ -1,11 +1,14 @@
 package Persistence;
 
 import Business.Ativos.Acao;
+import Business.CFD;
 import Business.Negociador;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateBD {
     private static void createRelations(Connection c) {
@@ -43,7 +46,7 @@ public class CreateBD {
             s.executeUpdate("create table CFD (Id int primary key, Data timestamp, UnidadesDeAtivo float," +
                     "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, " +
                     "IdAtivo varchar references ativo(id) on delete cascade, NifNegociador int references Negociador(nif)" +
-                    ", Aberto bit, ValorPorUnidadeNoFim float);");
+                    ", Aberto boolean, ValorPorUnidadeNoFim float);");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +61,7 @@ public class CreateBD {
             s.executeUpdate("insert into ativo values('AAPL', 'Apple Inc.', 82.3);");
             s.executeUpdate("insert into acao values(1, 'Apple');");
             s.executeUpdate("insert into acaoativo values(1, 'AAPL');");
-            s.executeUpdate("insert into CFD values(1, '2008-01-01 00:00:01', 2, 5, null, null, 'AAPL', 274129914, b'1', null);");
+            s.executeUpdate("insert into CFD values(1, '2008-01-01 00:00:01', 2, 5, null, null, 'AAPL', 274129914, true, null);");
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +78,6 @@ public class CreateBD {
         createRelations(c);
         populateRelations(c);
         Acao a = new Acao("AAPL", "Apple Inc.", 82.3, "Apple");
-        a.run();
 
         Connect.close(c);
     }

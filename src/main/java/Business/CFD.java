@@ -126,4 +126,9 @@ public abstract class CFD implements Observer {
 		else
 			return null;
 	}
+
+
+	public void setId(int id){
+		this.id=id;
+	}
 }
