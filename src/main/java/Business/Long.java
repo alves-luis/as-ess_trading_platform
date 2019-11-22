@@ -3,11 +3,19 @@ package Business;
 import java.time.LocalDateTime;
 
 public class Long extends CFD {
+
     public Long(int id, LocalDateTime data, double unidadesDeCompra, double valor, Double limiteMin, Double limiteMax,
                 String idAtivo, int nifNegociador, boolean aberto) {
 
         super(id, data, unidadesDeCompra, valor, limiteMin, limiteMax, idAtivo, nifNegociador, aberto);
     }
+
+    public Long(int id, LocalDateTime data, double unidadesDeCompra, double valor, Double limiteMin, Double limiteMax,
+                String idAtivo, int nifNegociador, boolean aberto, double valorPorUnidadeFinal ) {
+
+        super(id, data, unidadesDeCompra, valor, limiteMin, limiteMax, idAtivo, nifNegociador, aberto, valorPorUnidadeFinal);
+    }
+
 
     @Override
     public boolean update(double valorAtivo) {
