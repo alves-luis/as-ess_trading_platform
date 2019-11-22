@@ -80,9 +80,19 @@ public class CFDAtivoDao implements List<Observer> {
             return false;
         }
 
+        // we need to ignore the pattern here, to save our DB state :/!
+        if (!(observer instanceof CFD))
+            return false;
+
+        CFD cfd = (CFD) observer;
+
         PreparedStatement s = null;
         try {
-            s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?");
+            s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            s.setInt(1, cfd.getId());
+            s.setTimestamp(2, Timestamp.valueOf(cfd.getData()));
+            s.setDouble(3, cfd.getUnidadesDeAtivo());
+            // TO-DO
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,6 +135,7 @@ public class CFDAtivoDao implements List<Observer> {
         Connection c = Connect.connect();
         if (c == null) {
             System.out.println("Can't connect!");
+            return;
         }
 
         try {

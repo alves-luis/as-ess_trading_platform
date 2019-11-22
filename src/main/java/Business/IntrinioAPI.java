@@ -9,7 +9,6 @@ import com.intrinio.invoker.Configuration;
 import com.intrinio.invoker.auth.ApiKeyAuth;
 import com.intrinio.models.ApiResponseForexPrices;
 import com.intrinio.models.ApiResponseSecurityStockPrices;
-import com.intrinio.models.ForexPrice;
 import org.threeten.bp.LocalDate;
 
 import java.math.BigDecimal;
