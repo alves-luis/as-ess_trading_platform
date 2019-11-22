@@ -2,6 +2,9 @@ package Presentation;
 
 import Business.Ativos.Ativo;
 import Business.Ativos.AtivoConsts;
+import Business.CFD;
+import Business.Exceptions.NegociadorNaoExisteException;
+import Business.Exceptions.NegociadorNaoPossuiSaldoSuficienteException;
 import Business.FacadeNegociador;
 
 import java.util.*;
@@ -62,10 +65,36 @@ public class TextUINegociador implements UINegociador {
         return chooseOption(0,Integer.MAX_VALUE);
     }
 
+    private static double getDouble() {
+        Scanner sc = new Scanner(System.in);
+        double result = 0;
+        try {
+            result = sc.nextDouble();
+        }
+        catch (Exception e) {
+            System.out.println("Não inseriste um valor válido!");
+        }
+        return result;
+    }
+
+    private static boolean getBoolean() {
+        Scanner sc = new Scanner(System.in);
+        boolean result = false;
+        try {
+            String s = sc.next();
+            if (s.equals("s"))
+                result = true;
+        }
+        catch (Exception e) {
+            System.out.println("Não inseriste um valor válido!");
+        }
+        return result;
+    }
+
     private void showMenuInicial() {
         List<String> options = new ArrayList<>(Arrays.asList("Login", "Registar", "Sair"));
         System.out.print(listOptions(options));
-        int choice = chooseOption(2, options.size());
+        int choice = chooseOption(2, options.size() - 1);
         switch (choice) {
             case 0: showMenuLogin();
                     break;
@@ -95,7 +124,7 @@ public class TextUINegociador implements UINegociador {
     private void showPaginaInicial() {
         List<String> options = new ArrayList<>(Arrays.asList("Estabelecer CFD", "Encerrar CFD", "Consultar CFDs", "Consultar Ativos", "Logout"));
         System.out.print(listOptions(options));
-        int choice = chooseOption(4, options.size());
+        int choice = chooseOption(4, options.size() - 1);
         switch (choice) {
             case 0: showEstabelecerCFD();
                     break;
@@ -112,21 +141,84 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showConsultarAtivos() {
+        List<String> options = AtivoConsts.TIPOS_DE_ATIVOS;
+        System.out.println("Que tipo de Ativo deseja consultar?");
+        System.out.println(listOptions(options));
+        int tipo = chooseOption(options.size(), options.size() - 1);
+        List<Ativo> ativos = this.facade.getAtivos(options.get(tipo));
+        ativos.forEach(a -> System.out.println(a.toString()));
+        showPaginaInicial();
     }
 
     private void showConsultarCFDs() {
+        List<CFD> cfds = this.facade.getCFDs(this.nif);
+        Map<CFD, Double> valorAtual = new HashMap<>();
+        cfds.forEach(c -> valorAtual.put(c,this.facade.getValorAtualCFD(c.getId())));
+
+        for(Map.Entry<CFD, Double> en : valorAtual.entrySet()) {
+            CFD cfd = en.getKey();
+            List<String> format = new ArrayList<>(Arrays.asList("ID | " + cfd.getId(),
+                    "Data | " + cfd.getData().toString(),
+                    "Ativo | " + cfd.getIdAtivo(),
+                    "Unidades de Ativo | " + cfd.getUnidadesDeAtivo(),
+                    "Valor investido | " + cfd.getValorInvestido() + "€",
+                    "Valor em caso de reembolso | " + en.getValue() + "€"));
+            String delimiter = "-".repeat(format.get(format.size()-1).length());
+            System.out.println(delimiter);
+            format.forEach(System.out::println);
+            System.out.println(delimiter);
+        }
+        showPaginaInicial();
     }
 
     private void showEncerrarCFD() {
+
+
     }
 
     private void showEstabelecerCFD() {
         List<String> options = AtivoConsts.TIPOS_DE_ATIVOS;
         System.out.print(listOptions(options));
-        int choice = chooseOption(options.size(), options.size());
-        Collection<Ativo> ativos = this.facade.getAtivos(options.get(choice));
+        int typeOfAtivo = chooseOption(options.size(), options.size() - 1);
+        List<Ativo> ativos = this.facade.getAtivos(options.get(typeOfAtivo));
+
         List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
+        System.out.println("Indique o ativo no qual deseja investir:");
         System.out.print(listOptions(ativosAsString));
+
+        int ativo = chooseOption(ativos.size(), ativos.size() - 1);
+        double saldo = this.facade.getSaldo(this.nif);
+        System.out.println("Indique as unidades que deseja adquirir:\nPossui " + saldo + "€ para investir");
+        double unidades = getDouble();
+        double investimento = unidades * ativos.get(ativo).getValorPorUnidade();
+
+        Double stopLossValue = definirLimite("Stop Loss", investimento);
+        Double takeProfitValue = definirLimite("Take Profit", investimento);
+
+        try {
+            CFD cfd = this.facade.registarCFD(ativos.get(ativo).getId(), this.nif, unidades, stopLossValue, takeProfitValue, "Short");
+            System.out.println("CFD estabelecido com sucesso!");
+            System.out.println(cfd.toString());
+        } catch (NegociadorNaoExisteException e) {
+            e.printStackTrace();
+        } catch (NegociadorNaoPossuiSaldoSuficienteException e) {
+            System.out.println(e.toString());
+        }
+        showPaginaInicial();
+    }
+
+    private Double definirLimite(String nomeLimite, double investimentoBase) {
+        System.out.println("Deseja definir um " + nomeLimite + "?(s/n)\nVai investir " + investimentoBase + "€");
+        boolean queroLimite = getBoolean();
+        Double result = null;
+        if (queroLimite) {
+            System.out.println("Indique o valor:");
+            result = getDouble();
+            if (nomeLimite.equals("Take Profit") && result < investimentoBase ||
+                    nomeLimite.equals("Stop Loss") && result > investimentoBase)
+                System.out.println("Limite inválido! Vai estabelecer o CFD sem o limite");
+        }
+        return result;
     }
 
     private void showMenuRegistar() {

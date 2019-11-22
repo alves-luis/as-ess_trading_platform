@@ -1,17 +1,12 @@
 package Persistence;
 
 import Business.Ativos.Ativo;
-import Business.AtivoFactory;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class AtivoDAO implements Map<String,Ativo>, AtivoFactory {
-
-	public Ativo getAtivo(String tipo) {
-		throw new UnsupportedOperationException();
-	}
+public class AtivoDAO implements Map<String,Ativo>{
 
 	@Override
 	public int size() {

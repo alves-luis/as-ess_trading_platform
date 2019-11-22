@@ -10,10 +10,7 @@ import Persistence.CFDDao;
 import Persistence.NegociadorDAO;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class TradingPlatformNegociador implements FacadeNegociador {
 	private Map<String, Ativo> ativos;
@@ -45,11 +42,11 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 	/**
 	 * @return Todos os ativos disponíveis no sistema
 	 */
-	public Collection<Ativo> getAtivos() {
-		return this.ativos.values();
+	public List<Ativo> getAtivos() {
+		return new ArrayList<>(this.ativos.values());
 	}
 
-	public Collection<Ativo> getAtivos(String tipo) {
+	public List<Ativo> getAtivos(String tipo) {
 		return new ArrayList(Arrays.asList(new Acao("1","EDP",10, "Eletricidade de Portugal"), new Acao("2","GALP",5, "Galp Energia")));
 		//throw new UnsupportedOperationException();
 	}
@@ -120,8 +117,9 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 
 	}
 
-	public Collection<CFD> getCFDs(int nifNegociador) {
-		throw new UnsupportedOperationException();
+	public List<CFD> getCFDs(int nifNegociador) {
+		return new ArrayList<CFD>(Arrays.asList(new Short(1, LocalDateTime.now(), 10, 10, null, 10.0, "APPL", 274129914, true)));
+		//throw new UnsupportedOperationException();
 	}
 
 	public double atualizarSaldo(int nif, double quantia) {
@@ -131,4 +129,14 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 	public boolean verificarCredenciais(int nif, String password) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public double getSaldo(int nif) {
+		return 0;
+	}
+
+	public double getValorAtualCFD(int idCFD) {
+		return 30;
+	}
+
 }
