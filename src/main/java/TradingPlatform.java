@@ -1,6 +1,6 @@
-import Business.Facade.TradingPlatformNegociador;
-import Presentation.TextUINegociador;
-import Presentation.UINegociador;
+import business.facade.TradingPlatformNegociador;
+import presentation.TextUINegociador;
+import presentation.UINegociador;
 
 public class TradingPlatform {
     public static void main(String[] args) {
