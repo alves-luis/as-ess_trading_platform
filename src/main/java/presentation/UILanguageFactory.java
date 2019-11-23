@@ -5,8 +5,9 @@ import presentation.portuguese.PortuguesUILanguage;
 public class UILanguageFactory {
     private UILanguage lang;
 
-    public UILanguageFactory() {
-        this.lang = new PortuguesUILanguage();
+    public UILanguageFactory(String lang) {
+        if (lang.equals("PT"))
+            this.lang = new PortuguesUILanguage();
     }
 
     public GetAssetsUILanguage getAssetsUILanguage() {

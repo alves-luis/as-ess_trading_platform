@@ -16,10 +16,10 @@ public class TextUINegociador implements UINegociador {
     private Integer nif;
     private UILanguageFactory factory;
 
-    public TextUINegociador(FacadeNegociador f) {
+    public TextUINegociador(FacadeNegociador f, String lang) {
         this.facade = f;
         this.nif = null;
-        this.factory = new UILanguageFactory();
+        this.factory = new UILanguageFactory(lang);
     }
 
     public void start() {
