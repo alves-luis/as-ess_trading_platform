@@ -74,10 +74,11 @@ public abstract class Ativo implements Runnable {
 		double quot = this.getValorPorUnidadeMaisRecente(); // template method
 
 		List<Observer> observers = this.getObservers();
+
 		if (quot != this.getValorPorUnidade()) {
 			List<Observer> updatedObservers = new ArrayList<>();
 			for (int i = 0; i < observers.size(); i++) {
-				Observer o = observers.get(0);
+				Observer o = observers.get(i);
 				o.update(quot);
 				updatedObservers.add(o);
 			}

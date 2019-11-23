@@ -120,13 +120,6 @@ public abstract class CFD implements Observer {
 		return sb.toString();
 	}
 
-	public Double getFinal() {
-		if (!this.aberto)
-			return this.valorPorUnidadeFinal;
-		else
-			return null;
-	}
-
 
 	public void setId(int id){
 		this.id=id;

@@ -1,7 +1,6 @@
 package presentation;
 
 import business.ativos.Ativo;
-import business.ativos.AtivoConsts;
 import business.CFD;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;

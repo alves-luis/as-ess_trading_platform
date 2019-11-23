@@ -243,7 +243,7 @@ public class IntrinioAPI implements Mercado {
 
 		try {
 			StockMarketIndex r = indexApi.getStockMarketIndexById(identifier);
-			System.out.println(r);
+			return r.getName();
 		} catch (ApiException e) {
 			System.err.println("Exception when calling IndexApi#getStockMarketIndexById");
 			e.printStackTrace();

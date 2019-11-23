@@ -85,14 +85,18 @@ public class CFDAtivoDao implements List<Observer> {
             return false;
 
         CFD cfd = (CFD) observer;
+        if (cfd.isAberto())
+            return false;
 
         PreparedStatement s = null;
         try {
-            s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            s.setInt(1, cfd.getId());
-            s.setTimestamp(2, Timestamp.valueOf(cfd.getData()));
-            s.setDouble(3, cfd.getUnidadesDeAtivo());
-            // TO-DO
+            s = c.prepareStatement("update cfd set aberto = ?, valorporunidadenofim = ? where cfd.id = ?; ");
+            s.setBoolean(1, cfd.isAberto());
+            s.setDouble(2, cfd.getValorPorUnidadeFinal());
+            s.setInt(3, cfd.getId());
+
+            s.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,7 +116,10 @@ public class CFDAtivoDao implements List<Observer> {
 
     @Override
     public boolean addAll(Collection<? extends Observer> collection) {
-        return false;
+        for(Observer o : collection) {
+            this.add(o);
+        }
+        return true;
     }
 
     @Override
@@ -132,24 +139,7 @@ public class CFDAtivoDao implements List<Observer> {
 
     @Override
     public void clear() {
-        Connection c = Connect.connect();
-        if (c == null) {
-            System.out.println("Can't connect!");
-            return;
-        }
-
-        try {
-            PreparedStatement s = null;
-            s = c.prepareStatement("delete from cfd where idativo = ?, aberto = true;");
-            s.setString(1, this.idAtivo);
-
-            s.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        Connect.close(c);
+        // do nothing
     }
 
     @Override
