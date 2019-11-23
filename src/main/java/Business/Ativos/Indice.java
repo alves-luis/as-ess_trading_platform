@@ -15,8 +15,7 @@ public class Indice extends Ativo {
 		return this.numEmpresas;
 	}
 
-	@Override
-	public void run() {
-
+	public double getValorPorUnidadeMaisRecente() {
+		return this.getMercado().getCotacaoIndice(this.getId());
 	}
 }

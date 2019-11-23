@@ -18,8 +18,7 @@ public class Commodity extends Ativo {
         return s + "\nPaís: " + this.pais;
     }
 
-    @Override
-    public void run() {
-
+    public double getValorPorUnidadeMaisRecente() {
+        return this.getMercado().getCotacaoCommodity(this.getId());
     }
 }

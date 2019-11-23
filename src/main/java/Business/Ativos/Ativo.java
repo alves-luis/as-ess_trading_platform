@@ -5,6 +5,7 @@ import Business.Mercado.Mercado;
 import Business.Observer;
 import Persistence.CFDAtivoDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Ativo implements Runnable {
@@ -65,5 +66,24 @@ public abstract class Ativo implements Runnable {
 	public void setObservers(List<Observer> observers) {
 		this.observers.clear();
 		this.observers.addAll(observers);
+	}
+
+	public abstract double getValorPorUnidadeMaisRecente();
+
+	public void run() {
+		double quot = this.getValorPorUnidadeMaisRecente(); // template method
+
+		List<Observer> observers = this.getObservers();
+		if (quot != this.getValorPorUnidade()) {
+			List<Observer> updatedObservers = new ArrayList<>();
+			for (int i = 0; i < observers.size(); i++) {
+				Observer o = observers.get(0);
+				o.update(quot);
+				updatedObservers.add(o);
+			}
+			this.setObservers(updatedObservers);
+		}
+
+		this.setValorPorUnidade(quot);
 	}
 }

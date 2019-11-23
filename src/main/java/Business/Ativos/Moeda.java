@@ -30,8 +30,7 @@ public class Moeda extends Ativo {
 		return this.moedaB;
 	}
 
-	@Override
-	public void run() {
-
+	public double getValorPorUnidadeMaisRecente() {
+		return this.getMercado().getCotacaoMoeda(this.getId());
 	}
 }
