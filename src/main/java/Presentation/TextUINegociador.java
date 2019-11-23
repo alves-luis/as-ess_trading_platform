@@ -5,7 +5,7 @@ import Business.Ativos.AtivoConsts;
 import Business.CFD;
 import Business.Exceptions.NegociadorNaoExisteException;
 import Business.Exceptions.NegociadorNaoPossuiSaldoSuficienteException;
-import Business.FacadeNegociador;
+import Business.Facade.FacadeNegociador;
 
 import java.util.*;
 import java.util.stream.Collectors;

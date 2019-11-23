@@ -1,10 +1,14 @@
-package Business;
+package Business.Facade;
 
 import Business.Ativos.Acao;
 import Business.Ativos.Ativo;
+import Business.CFD;
 import Business.Exceptions.CFDNaoExisteException;
 import Business.Exceptions.NegociadorNaoExisteException;
 import Business.Exceptions.NegociadorNaoPossuiSaldoSuficienteException;
+import Business.Long;
+import Business.Negociador;
+import Business.Short;
 import Persistence.AtivoDAO;
 import Persistence.CFDDao;
 import Persistence.NegociadorDAO;
@@ -132,14 +136,21 @@ public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 
 	@Override
 	public double getSaldo(int nif) {
-		return 0;
+		Negociador n = this.negociadores.get(nif);
+		if (n == null)
+			return 0;
+		else
+			return n.getSaldo();
 	}
 
 	public double getValorAtualCFD(int idCFD) {
-		return 30;
+		CFD c = this.cfds.get(idCFD);
+		Ativo a = this.ativos.get(c.getIdAtivo());
+		double vpu = a.getValorPorUnidadeMaisRecente();
+		double unidades = c.getUnidadesDeAtivo();
+		return vpu * unidades;
 	}
 
-	@Override
 	public void run() {
 		while (true) {
 			try {

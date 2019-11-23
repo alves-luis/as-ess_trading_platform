@@ -1,4 +1,4 @@
-import Business.TradingPlatformNegociador;
+import Business.Facade.TradingPlatformNegociador;
 import Presentation.TextUINegociador;
 import Presentation.UINegociador;
 

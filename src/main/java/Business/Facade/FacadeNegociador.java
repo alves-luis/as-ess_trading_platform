@@ -1,11 +1,11 @@
-package Business;
+package Business.Facade;
 
 import Business.Ativos.Ativo;
+import Business.CFD;
 import Business.Exceptions.CFDNaoExisteException;
 import Business.Exceptions.NegociadorNaoExisteException;
 import Business.Exceptions.NegociadorNaoPossuiSaldoSuficienteException;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface FacadeNegociador {
