@@ -12,7 +12,7 @@ import Persistence.NegociadorDAO;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class TradingPlatformNegociador implements FacadeNegociador {
+public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 	private Map<String, Ativo> ativos;
 	private Map<Integer, CFD> cfds;
 	private Map<Integer, Negociador> negociadores;
@@ -139,4 +139,15 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		return 30;
 	}
 
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			this.ativos.values().forEach(Runnable::run);
+		}
+	}
 }

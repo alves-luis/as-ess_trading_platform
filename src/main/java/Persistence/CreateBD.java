@@ -1,13 +1,12 @@
 package Persistence;
 
-import Business.Ativos.Acao;
-import Business.CFD;
-import Business.Negociador;
+import Business.Ativos.*;
+import Business.Mercado.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateBD {
@@ -68,6 +67,60 @@ public class CreateBD {
         }
     }
 
+    private static void populateAtivos() {
+        Mercado m = new IntrinioAPI();
+        Map<String, Ativo> ativos = new AtivoDAO();
+        //populateAcoes(m, ativos);
+        //populateIndices(m, ativos);
+        //populateMoedas(m, ativos);
+        populateCommodities(m, ativos);
+    }
+
+    private static void populateAcoes(MercadoAcao m, Map<String, Ativo> ativos) {
+        List<String> acoesId = m.getAcoes();
+        for(String id : acoesId) {
+            String nome = m.getNomeAcao(id);
+            double vpu = m.getCotacaoAcao(id);
+            String empresa = m.getEmpresaAcao(id);
+            Ativo a = new Acao(id, nome, vpu, empresa);
+            ativos.put(id, a);
+        }
+    }
+
+    private static void populateIndices(MercadoIndice m, Map<String, Ativo> ativos) {
+        List<String> indicesId = m.getIndices();
+        for(String id : indicesId) {
+            String nome = m.getNomeIndice(id);
+            double vpu = m.getCotacaoIndice(id);
+            Ativo a = new Indice(id, nome, vpu);
+            ativos.put(id, a);
+        }
+    }
+
+    private static void populateMoedas(MercadoMoeda m, Map<String, Ativo> ativos) {
+        List<String> moedasId = m.getMoedas();
+        for(String id : moedasId) {
+            String nome = id;
+            double vpu = m.getCotacaoMoeda(id);
+            String moedaA = m.getMoedaBase(id);
+            String moedaB = m.getMoedaQuota(id);
+            Ativo a = new Moeda(id, nome, vpu, moedaA, moedaB);
+            System.out.println(a.toString());
+            ativos.put(id,a);
+        }
+    }
+
+    private static void populateCommodities(MercadoCommodity m, Map<String, Ativo> ativos) {
+        List<String> commoditiesId = m.getCommodities();
+        for(String id : commoditiesId) {
+            String nome = m.getNomeCommodity(id);
+            double vpu = m.getCotacaoCommodity(id);
+            String pais = m.getPaisCommodity(id);
+            Ativo a = new Commodity(id, nome, vpu, pais);
+            ativos.put(id, a);
+        }
+    }
+
 
     public static void main(String[] args) {
         Connection c = Connect.connect();
@@ -77,9 +130,8 @@ public class CreateBD {
         }
         createRelations(c);
         populateRelations(c);
-        Acao a = new Acao("AAPL", "Apple Inc.", 82.3, "Apple");
+        populateAtivos();
 
         Connect.close(c);
     }
-
 }

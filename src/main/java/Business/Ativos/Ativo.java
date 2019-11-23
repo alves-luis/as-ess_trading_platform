@@ -1,7 +1,7 @@
 package Business.Ativos;
 
-import Business.IntrinioAPI;
-import Business.Mercado;
+import Business.Mercado.IntrinioAPI;
+import Business.Mercado.Mercado;
 import Business.Observer;
 import Persistence.CFDAtivoDao;
 

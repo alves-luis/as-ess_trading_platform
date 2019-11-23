@@ -140,7 +140,7 @@ public class CFDAtivoDao implements List<Observer> {
 
         try {
             PreparedStatement s = null;
-            s = c.prepareStatement("delete from cfd where idativo = ?, aberto = b'1';");
+            s = c.prepareStatement("delete from cfd where idativo = ?, aberto = true;");
             s.setString(1, this.idAtivo);
 
             s.executeUpdate();

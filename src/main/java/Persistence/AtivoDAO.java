@@ -1,8 +1,14 @@
 package Persistence;
 
+import Business.Ativos.Acao;
 import Business.Ativos.Ativo;
+import Business.Ativos.Indice;
+import Business.Ativos.Moeda;
+import Business.Mercado.IntrinioAPI;
+import Business.Mercado.Mercado;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

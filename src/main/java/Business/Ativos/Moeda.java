@@ -8,6 +8,12 @@ public class Moeda extends Ativo {
 		super(id, nome, vpu);
 	}
 
+	public Moeda(String id, String nome, double vpu, String moedaA, String moedaB) {
+		super(id, nome, vpu);
+		this.moedaA = moedaA;
+		this.moedaB = moedaB;
+	}
+
 	public void setMoedaA(String moedaA) {
 		this.moedaA = moedaA;
 	}
