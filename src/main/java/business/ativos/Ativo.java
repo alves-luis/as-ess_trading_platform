@@ -52,9 +52,6 @@ public abstract class Ativo implements Runnable, Observable {
 		return this.mercado;
 	}
 
-	public List<Observer> getObservers() {
-		return this.observers;
-	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -83,10 +80,6 @@ public abstract class Ativo implements Runnable, Observable {
 			updatedObservers.add(o);
 		}
 		this.setObservers(updatedObservers);
-	}
-
-	public void removeObserver(Observer o) {
-		this.observers.remove(o);
 	}
 
 	public void run() {
