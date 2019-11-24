@@ -111,7 +111,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 
 		CFD c = this.cfds.get(id);
 		Ativo a = this.ativos.get(c.getIdAtivo());
-		c.fecharCFD(a.getValorPorUnidade());
+		c.fecharCFD(a.getValorPorUnidadeMaisRecente());
 		this.cfds.put(id,c); // to update state
 
 
