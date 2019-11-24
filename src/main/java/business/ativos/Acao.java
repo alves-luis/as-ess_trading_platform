@@ -22,7 +22,9 @@ public class Acao extends Ativo {
 
 	@Override
 	public double getValorPorUnidadeMaisRecente() {
-		return this.getMercado().getCotacaoAcao(this.getId());
+		double val = this.getMercado().getCotacaoAcao(this.getId());
+		this.setValorPorUnidade(val);
+		return val;
 	}
 
 	public String toString() {

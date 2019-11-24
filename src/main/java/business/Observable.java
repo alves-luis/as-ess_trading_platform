@@ -8,7 +8,5 @@ public interface Observable {
 
 	void notifyObservers();
 
-	void removeObserver(Observer o);
-
 	void setObservers(List<Observer> l);
 }
