@@ -19,6 +19,8 @@ public class Commodity extends Ativo {
     }
 
     public double getValorPorUnidadeMaisRecente() {
-        return this.getMercado().getCotacaoCommodity(this.getId());
+        double val =  this.getMercado().getCotacaoCommodity(this.getId());
+        this.setValorPorUnidade(val);
+        return val;
     }
 }

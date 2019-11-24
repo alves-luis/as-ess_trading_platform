@@ -31,6 +31,8 @@ public class Moeda extends Ativo {
 	}
 
 	public double getValorPorUnidadeMaisRecente() {
-		return this.getMercado().getCotacaoMoeda(this.getId());
+		double val = this.getMercado().getCotacaoMoeda(this.getId());
+		this.setValorPorUnidade(val);
+		return val;
 	}
 }

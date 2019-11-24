@@ -16,6 +16,8 @@ public class Indice extends Ativo {
 	}
 
 	public double getValorPorUnidadeMaisRecente() {
-		return this.getMercado().getCotacaoIndice(this.getId());
+		double val = this.getMercado().getCotacaoIndice(this.getId());
+		this.setValorPorUnidade(val);
+		return val;
 	}
 }
