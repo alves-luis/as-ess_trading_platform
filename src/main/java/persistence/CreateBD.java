@@ -1,5 +1,6 @@
 package persistence;
 
+import business.AtivoManager;
 import business.ativos.*;
 import business.mercado.*;
 
@@ -31,6 +32,11 @@ public class CreateBD {
             s.executeUpdate("drop table if exists IndiceAtivo cascade;");
             s.executeUpdate("create table IndiceAtivo (IdIndice int references Indice(id), IdAtivo varchar references Ativo(id), primary key (IdIndice, IdAtivo));");
 
+            s.executeUpdate("drop table if exists Commodity cascade;");
+            s.executeUpdate("create table Commodity (Id int primary key, Pais varchar);");
+
+            s.executeUpdate("drop table if exists CommodityAtivo cascade;");
+            s.executeUpdate("create table CommodityAtivo (IdCommodity int references Commodity(id), IdAtivo varchar references Ativo(id), primary key (IdCommodity, IdAtivo));");
 
             s.executeUpdate("drop table if exists Moeda cascade;");
             s.executeUpdate("create table Moeda (Id int primary key, MoedaA varchar, MoedaB varchar);");
@@ -58,8 +64,8 @@ public class CreateBD {
             s = c.createStatement();
             s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");
             s.executeUpdate("insert into ativo values('sec_g26W6g', 'Galp Energia Sgps', 15.20);");
-            s.executeUpdate("insert into acao values(1, 'Galp Energia Sgps');");
-            s.executeUpdate("insert into acaoativo values(1, 'sec_g26W6g');");
+            s.executeUpdate("insert into acao values(0, 'Galp Energia Sgps');");
+            s.executeUpdate("insert into acaoativo values(0, 'sec_g26W6g');");
             s.executeUpdate("insert into CFD values(1, '2008-01-01 00:00:01', 2, 5, 15.0, null, 'sec_g26W6g', 274129914, true, null);");
         }
         catch (SQLException e) {
@@ -132,7 +138,7 @@ public class CreateBD {
         createRelations(c);
         populateRelations(c);
         populateAtivos();
-
+        
         Connect.close(c);
     }
 }

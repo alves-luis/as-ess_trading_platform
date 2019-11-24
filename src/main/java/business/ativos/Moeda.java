@@ -33,4 +33,9 @@ public class Moeda extends Ativo {
 	public double getValorPorUnidadeMaisRecente() {
 		return this.getMercado().getCotacaoMoeda(this.getId());
 	}
+
+	public String toString() {
+		String s = super.toString();
+		return s + "MoedaA: " + this.moedaA + "\nMoedaB: " + this.moedaB;
+	}
 }

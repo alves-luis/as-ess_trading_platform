@@ -24,4 +24,9 @@ public class Acao extends Ativo {
 	public double getValorPorUnidadeMaisRecente() {
 		return this.getMercado().getCotacaoAcao(this.getId());
 	}
+
+	public String toString() {
+		String s = super.toString();
+		return s + "Empresa: " + this.empresa;
+	}
 }

@@ -136,9 +136,9 @@ public class CFDDao implements Map<Integer, CFD> {
 
         return null;
     }
-    
 
-        @Override
+
+    @Override
     public CFD put(Integer integer, CFD cfd) {
         Connection c = Connect.connect();
         if (c == null){
@@ -179,9 +179,9 @@ public class CFDDao implements Map<Integer, CFD> {
             e.printStackTrace();
         }
 
-            Connect.close(c);
+        Connect.close(c);
 
-            return null;
+        return null;
     }
 
     @Override

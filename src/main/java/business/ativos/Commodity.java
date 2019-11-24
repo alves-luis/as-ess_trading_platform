@@ -13,9 +13,13 @@ public class Commodity extends Ativo {
         this.pais = pais;
     }
 
+    public String getPais(){
+        return this.pais;
+    }
+
     public String toString() {
         String s = super.toString();
-        return s + "\nPaís: " + this.pais;
+        return s + "País: " + this.pais;
     }
 
     public double getValorPorUnidadeMaisRecente() {
