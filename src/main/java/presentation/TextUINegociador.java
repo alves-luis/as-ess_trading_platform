@@ -112,7 +112,7 @@ public class TextUINegociador implements UINegociador {
         int nif = getInt();
         System.out.println(lang.getInsertYourPassword());
         String pass = getString();
-        boolean loggedIn = true; //this.facade.verificarCredenciais(nif, pass);
+        boolean loggedIn = this.facade.verificarCredenciais(nif, pass);
         if (loggedIn) {
             this.nif = nif;
             showPaginaInicial();
@@ -136,10 +136,16 @@ public class TextUINegociador implements UINegociador {
                     break;
             case 3: showConsultarAtivos();
                     break;
+            case 4: showAdicionarSaldo();
+                    break;
             default: this.nif = null;
                     showMenuInicial();
                     break;
         }
+    }
+
+    private void showAdicionarSaldo() {
+        // TODO
     }
 
     private void showConsultarAtivos() {
@@ -155,7 +161,12 @@ public class TextUINegociador implements UINegociador {
 
     private void showConsultarCFDs() {
         GetCFDsUILanguage lang = this.factory.getCFDsUILanguage();
-        List<CFD> cfds = this.facade.getCFDs(this.nif);
+        List<CFD> cfds;
+        try {
+            cfds = this.facade.getCFDs(this.nif);
+        } catch (NegociadorNaoExisteException e) {
+            cfds = new ArrayList<>();
+        }
         Map<CFD, Double> valorAtual = new HashMap<>();
         cfds.forEach(c -> valorAtual.put(c,this.facade.getValorAtualCFD(c.getId())));
 

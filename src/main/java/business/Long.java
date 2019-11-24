@@ -17,6 +17,10 @@ public class Long extends CFD {
     }
 
 
+    /**
+     * @param valorAtivo valor do ativo associado a este CFD
+     * @return se deve continuar a ser atualizado
+     */
     @Override
     public boolean update(double valorAtivo) {
         // se cfd fechado, retorna falso (nao atualizou)

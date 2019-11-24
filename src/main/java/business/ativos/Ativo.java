@@ -1,5 +1,6 @@
 package business.ativos;
 
+import business.Observable;
 import business.mercado.IntrinioAPI;
 import business.mercado.Mercado;
 import business.Observer;
@@ -8,7 +9,7 @@ import persistence.CFDAtivoDao;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Ativo implements Runnable {
+public abstract class Ativo implements Runnable, Observable {
 	private String id;
 	private String nome;
 	private double valorPorUnidade;
@@ -70,21 +71,30 @@ public abstract class Ativo implements Runnable {
 
 	public abstract double getValorPorUnidadeMaisRecente();
 
+	public boolean registerObserver(Observer o) {
+		return !(this.observers.add(o));
+	}
+
+	public void notifyObservers() {
+		List<Observer> updatedObservers = new ArrayList<>();
+		for(int i = 0; i < observers.size(); i++) {
+			Observer o = observers.get(i);
+			o.update(this.valorPorUnidade);
+			updatedObservers.add(o);
+		}
+		this.setObservers(updatedObservers);
+	}
+
+	public void removeObserver(Observer o) {
+		this.observers.remove(o);
+	}
+
 	public void run() {
 		double quot = this.getValorPorUnidadeMaisRecente(); // template method
 
-		List<Observer> observers = this.getObservers();
-
 		if (quot != this.getValorPorUnidade()) {
-			List<Observer> updatedObservers = new ArrayList<>();
-			for (int i = 0; i < observers.size(); i++) {
-				Observer o = observers.get(i);
-				o.update(quot);
-				updatedObservers.add(o);
-			}
-			this.setObservers(updatedObservers);
+			this.setValorPorUnidade(quot);
+			notifyObservers();
 		}
-
-		this.setValorPorUnidade(quot);
 	}
 }

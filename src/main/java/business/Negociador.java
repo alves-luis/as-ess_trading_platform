@@ -2,6 +2,8 @@ package business;
 
 import persistence.CFDNegociadorDao;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Negociador {
@@ -21,16 +23,22 @@ public class Negociador {
     	this.cfds = new CFDNegociadorDao();
     }
 
-	public Negociador() {
-
-	}
-
+	/**
+	 * @param valor a adicionar/remover
+	 * @return saldo após a atualização
+	 */
 	public double adicionarSaldo(double valor) {
-		throw new UnsupportedOperationException();
+		this.saldo += valor;
+		return this.saldo;
 	}
 
+	/**
+	 * @param nif nif do negociador
+	 * @param password password do negociador
+	 * @return se corresponde às credenciais que o negociador forneceu no momento de criação
+	 */
 	public boolean verificarCredenciais(int nif, String password) {
-		throw new UnsupportedOperationException();
+		return this.nif == nif && this.password.equals(password);
 	}
 
 	public int getNif() {
@@ -69,8 +77,12 @@ public class Negociador {
 		return this.saldo;
 	}
 
+	/**
+	 * @param valor valor que se quer saber se o negociador pode dispender
+	 * @return true se tem saldo suficiente, false se não
+	 */
 	public boolean podeGastar(double valor) {
-    	throw new UnsupportedOperationException();
+    	return this.saldo >= valor;
 	}
 
 	public String toString() {
@@ -81,5 +93,18 @@ public class Negociador {
 		sb.append("Password: ").append(this.password).append("\n");
 		sb.append("Saldo: ").append(this.saldo).append("\n");
 		return sb.toString();
+	}
+
+	/**
+	 * @return Uma Lista com os CFDs do Negociador ainda abertos
+	 */
+	public List<CFD> getCFDsAbertos() {
+    	List<CFD> result = new ArrayList<>();
+    	for(int i = 0; i < this.cfds.size(); i++) {
+			CFD c = this.cfds.get(i);
+			if (c.isAberto())
+				result.add(c);
+		}
+    	return result;
 	}
 }

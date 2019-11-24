@@ -25,9 +25,9 @@ public interface FacadeNegociador {
      * @param nifNegociador
      * @return Lista dos CFDs abertos do negociador
      */
-    List<CFD> getCFDs(int nifNegociador);
+    List<CFD> getCFDs(int nifNegociador) throws NegociadorNaoExisteException;
 
-    double atualizarSaldo(int nif, double quantia);
+    double atualizarSaldo(int nif, double quantia) throws NegociadorNaoExisteException;
 
     boolean verificarCredenciais(int nif, String pass);
 

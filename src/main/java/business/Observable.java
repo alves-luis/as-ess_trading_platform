@@ -1,6 +1,6 @@
 package business;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface Observable {
 
@@ -10,5 +10,5 @@ public interface Observable {
 
 	void removeObserver(Observer o);
 
-	void setObservers(Collection<Observer> l);
+	void setObservers(List<Observer> l);
 }

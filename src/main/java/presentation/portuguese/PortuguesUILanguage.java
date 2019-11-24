@@ -35,7 +35,7 @@ public class PortuguesUILanguage implements UILanguage {
 
     @Override
     public List<String> getInitialPageOptions() {
-        return new ArrayList<>(Arrays.asList("Estabelecer CFD", "Encerrar CFD", "Consultar CFDs", "Consultar Ativos", "Logout"));
+        return new ArrayList<>(Arrays.asList("Estabelecer CFD", "Encerrar CFD", "Consultar CFDs", "Consultar Ativos", "Adicionar Saldo", "Logout"));
     }
 
     @Override

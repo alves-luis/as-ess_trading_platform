@@ -1,28 +1,24 @@
 package business.facade;
 
-import business.ativos.Acao;
+import business.*;
+import business.Long;
 import business.ativos.Ativo;
-import business.CFD;
 import business.exceptions.CFDNaoExisteException;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;
-import business.Long;
-import business.Negociador;
-import business.Short;
-import persistence.AtivoDAO;
 import persistence.CFDDao;
 import persistence.NegociadorDAO;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
-	private Map<String, Ativo> ativos;
+public class TradingPlatformNegociador implements FacadeNegociador {
+	private AtivoManager ativos;
 	private Map<Integer, CFD> cfds;
 	private Map<Integer, Negociador> negociadores;
 
 	public TradingPlatformNegociador() {
-		this.ativos = new AtivoDAO();
+		this.ativos = new AtivoManager();
 		this.cfds = new CFDDao();
 		this.negociadores = new NegociadorDAO();
 	}
@@ -47,12 +43,15 @@ public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 	 * @return Todos os ativos disponíveis no sistema
 	 */
 	public List<Ativo> getAtivos() {
-		return new ArrayList<>(this.ativos.values());
+		return new ArrayList<>(this.ativos.getAll());
 	}
 
+	/**
+	 * @param tipo Tipo de ativo
+	 * @return Lista de Ativos desse tipo
+	 */
 	public List<Ativo> getAtivos(String tipo) {
-		return new ArrayList(Arrays.asList(new Acao("1","EDP",10, "Eletricidade de Portugal"), new Acao("2","GALP",5, "Galp Energia")));
-		//throw new UnsupportedOperationException();
+		return this.ativos.getPorTipo(tipo);
 	}
 
 	/**
@@ -93,6 +92,11 @@ public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 		// by default creating long positions
 		CFD c = new Long(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(),limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
 		this.cfds.put(c.getId(),c);
+		this.atualizarSaldo(nifNegociador, -investimento);
+
+		Ativo a = this.ativos.get(idAtivo);
+		a.registerObserver(c);
+
 		return c;
 	}
 
@@ -115,25 +119,63 @@ public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 		double valorAtivo = a.getValorPorUnidade();
 		double saldoAAdicionar = valorAtivo * c.getUnidadesDeAtivo();
 
-		this.atualizarSaldo(c.getNifNegociador(), saldoAAdicionar);
+		try {
+			this.atualizarSaldo(c.getNifNegociador(), saldoAAdicionar);
+		}
+		catch (NegociadorNaoExisteException e) {
+			saldoAAdicionar = 0;
+		}
 
 		return saldoAAdicionar;
 
 	}
 
-	public List<CFD> getCFDs(int nifNegociador) {
-		return new ArrayList<CFD>(Arrays.asList(new Short(1, LocalDateTime.now(), 10, 10, null, 10.0, "APPL", 274129914, true)));
-		//throw new UnsupportedOperationException();
+	/**
+	 * @param nifNegociador nif do negociador que deseja obter a informação
+	 * @return retorna a lista de CFDs abertos do negociador
+	 */
+	public List<CFD> getCFDs(int nifNegociador) throws NegociadorNaoExisteException {
+		if (!this.negociadores.containsKey(nifNegociador))
+			throw new NegociadorNaoExisteException(nifNegociador);
+
+		Negociador n = this.negociadores.get(nifNegociador);
+		return n.getCFDsAbertos();
 	}
 
-	public double atualizarSaldo(int nif, double quantia) {
-		throw new UnsupportedOperationException();
+	/**
+	 * @param nif nif do utilizador
+	 * @param quantia quantia a adicionar
+	 * @return saldo atual do negociador
+	 * @throws NegociadorNaoExisteException
+	 */
+	public double atualizarSaldo(int nif, double quantia) throws NegociadorNaoExisteException {
+		if (!this.negociadores.containsKey(nif))
+			throw new NegociadorNaoExisteException(nif);
+
+		Negociador n = this.negociadores.get(nif);
+		double saldo = n.adicionarSaldo(quantia);
+		this.negociadores.put(nif, n);
+
+		return saldo;
 	}
 
+	/**
+	 * @param nif nif do negociador
+	 * @param password pass a verificar
+	 * @return se as credenciais do negociador em causa correspondem aos valores dados
+	 */
 	public boolean verificarCredenciais(int nif, String password) {
-		throw new UnsupportedOperationException();
+		if (!this.negociadores.containsKey(nif))
+			return false;
+
+		Negociador n = this.negociadores.get(nif);
+		return n.verificarCredenciais(nif, password);
 	}
 
+	/**
+	 * @param nif nif do negociador
+	 * @return saldo atual do negociador (ou 0 se este não existir)
+	 */
 	@Override
 	public double getSaldo(int nif) {
 		Negociador n = this.negociadores.get(nif);
@@ -143,22 +185,15 @@ public class TradingPlatformNegociador implements FacadeNegociador, Runnable {
 			return n.getSaldo();
 	}
 
+	/**
+	 * @param idCFD id do CFD
+	 * @return valorização atual do CFD
+	 */
 	public double getValorAtualCFD(int idCFD) {
 		CFD c = this.cfds.get(idCFD);
 		Ativo a = this.ativos.get(c.getIdAtivo());
 		double vpu = a.getValorPorUnidadeMaisRecente();
 		double unidades = c.getUnidadesDeAtivo();
 		return vpu * unidades;
-	}
-
-	public void run() {
-		while (true) {
-			try {
-				Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.ativos.values().forEach(Runnable::run);
-		}
 	}
 }
