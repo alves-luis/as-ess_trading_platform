@@ -197,7 +197,7 @@ public class TextUINegociador implements UINegociador {
         List<String> options = this.factory.getAssetsUILanguage().getTypesOfAssets();
         System.out.print(listOptions(options));
         int typeOfAtivo = chooseOption(options.size(), options.size() - 1);
-        List<Ativo> ativos = this.facade.getAtivos(options.get(typeOfAtivo));
+        List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[typeOfAtivo]);
 
         List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
         System.out.println(lang.getInsertAssetToInvest());

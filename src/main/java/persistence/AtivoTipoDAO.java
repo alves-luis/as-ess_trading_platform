@@ -53,6 +53,7 @@ public class AtivoTipoDAO implements Map<String, List<Ativo>> {
                 return null;
 
             resultSet.next();
+            resultSet.next();
 
             while(!(resultSet.isAfterLast())){
 

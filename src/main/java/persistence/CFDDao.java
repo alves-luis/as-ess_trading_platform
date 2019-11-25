@@ -153,18 +153,23 @@ public class CFDDao implements Map<Integer, CFD> {
         PreparedStatement s = null;
         try{
             if(this.containsKey(integer)){
-                s=c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = b'?', valorporunidadenofim = ? where id = ?;");
-                s.setInt(11, cfd.getId());
+                s = c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = ?, valorporunidadenofim = ? where id = " + cfd.getId());
             }
             else
-                s=c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             s.setInt(1,cfd.getId());
             s.setTimestamp(2,Timestamp.valueOf(cfd.getData()));
             s.setDouble(3,cfd.getUnidadesDeAtivo());
             s.setDouble(4,cfd.getValorPorUnidadeNaCompra());
-            s.setDouble(5,cfd.getLimiteInf());
-            s.setDouble(6,cfd.getLimitSup());
+            if (cfd.getLimiteInf() != null)
+                s.setDouble(5,cfd.getLimiteInf());
+            else
+                s.setNull(5, Types.DOUBLE);
+            if (cfd.getLimitSup() != null)
+                s.setDouble(6,cfd.getLimitSup());
+            else
+                s.setNull(6, Types.DOUBLE);
             s.setString(7,cfd.getIdAtivo());
             s.setInt(8,cfd.getNifNegociador());
             s.setBoolean(9,cfd.isAberto());

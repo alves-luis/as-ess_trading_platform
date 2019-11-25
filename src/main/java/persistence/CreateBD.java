@@ -65,10 +65,6 @@ public class CreateBD {
         try {
             s = c.createStatement();
             s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");
-            s.executeUpdate("insert into ativo values('sec_g26W6g', 'Galp Energia Sgps', 15.20);");
-            s.executeUpdate("insert into acao values(0, 'Galp Energia Sgps');");
-            s.executeUpdate("insert into acaoativo values(0, 'sec_g26W6g');");
-            s.executeUpdate("insert into CFD values(1, '2008-01-01 00:00:01', 2, 5, 15.0, null, 'sec_g26W6g', 274129914, true, null);");
         }
         catch (SQLException e) {
             e.printStackTrace();
