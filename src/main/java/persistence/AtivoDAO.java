@@ -82,7 +82,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 		return false;
 	}
 
-	private int sizeAtivo(Connection c, String tipo) {
+	private int sizeAtivoPorTipo(Connection c, String tipo) {
 
 		Statement s;
 		int result = 0;
@@ -292,7 +292,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		try {
 			int res;
-			int id = sizeAtivo(c,"acao");
+			int id = sizeAtivoPorTipo(c,"acao");
 
 			s = c.prepareStatement("insert into acao values (?,?);");
 			s.setInt(1, id);
@@ -321,7 +321,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		try {
 			int res;
-			int id = sizeAtivo(c,"moeda");
+			int id = sizeAtivoPorTipo(c,"moeda");
 
 			s = c.prepareStatement("insert into moeda values (?,?,?);");
 			s.setInt(1, id);
@@ -351,7 +351,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		try{
 			int res;
-			int id = sizeAtivo(c,"indice");
+			int id = sizeAtivoPorTipo(c,"indice");
 
 			s = c.prepareStatement("insert into indice values (?,?);");
 			s.setInt(1, id);
@@ -379,7 +379,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
         try{
             int res;
-            int id = sizeAtivo(c,"commodity");
+            int id = sizeAtivoPorTipo(c,"commodity");
 
             s = c.prepareStatement("insert into commodity values (?,?);");
             s.setInt(1, id);

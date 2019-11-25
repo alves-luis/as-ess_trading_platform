@@ -1,12 +1,13 @@
 package persistence;
 
-import business.ativos.Ativo;
-import business.ativos.AtivoConsts;
+import business.ativos.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class AtivoTipoDAO implements Map<String, List<Ativo>> {
     @Override
@@ -31,6 +32,62 @@ public class AtivoTipoDAO implements Map<String, List<Ativo>> {
 
     @Override
     public List<Ativo> get(Object o) {
+        Connection c = Connect.connect();
+        if (c == null){
+            System.out.println("Can't connect!");
+            return null;
+        }
+
+        String tipo = (String) o;
+
+        List<Ativo> ativos = new ArrayList<>();
+
+        PreparedStatement s;
+
+        try{
+            s = c.prepareStatement( DaoHelper.getFullInformationForType(tipo));
+
+            ResultSet resultSet = s.executeQuery();
+
+            if (!resultSet.isBeforeFirst())
+                return null;
+
+            resultSet.next();
+
+            while(!(resultSet.isAfterLast())){
+
+                String id = resultSet.getString("idativo");
+                String nome = resultSet.getString("nome");
+                double valorPorUnidade = resultSet.getDouble("valorporunidade");
+
+                if (tipo.equals("acao")){
+                    ativos.add(DaoHelper.getAcao(resultSet,id,nome,valorPorUnidade));
+                }
+
+                if (tipo.equals("moeda")){
+                    ativos.add(DaoHelper.getMoeda(resultSet,id,nome,valorPorUnidade));
+                }
+
+                if (tipo.equals("indice")){
+                    ativos.add(DaoHelper.getIndice(resultSet,id,nome,valorPorUnidade));
+                }
+
+                if (tipo.equals("commodity")){
+                    ativos.add(DaoHelper.getCommodity(resultSet,id,nome,valorPorUnidade));
+                }
+
+                resultSet.next();
+            }
+
+            Connect.close(c);
+            return ativos;
+
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        Connect.close(c);
         return null;
     }
 

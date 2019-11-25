@@ -4,9 +4,11 @@ import business.AtivoManager;
 import business.ativos.*;
 import business.mercado.*;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +140,19 @@ public class CreateBD {
         createRelations(c);
         populateRelations(c);
         populateAtivos();
-        
+
+/*
+        AtivoTipoDAO d = new AtivoTipoDAO();
+
+        List<Ativo> rr = d.get("commodity");
+
+        System.out.println(rr.toString());
+
+        System.out.println(rr.size());
+
+
+ */
+
         Connect.close(c);
     }
 }

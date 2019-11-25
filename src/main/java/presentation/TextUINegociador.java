@@ -2,6 +2,7 @@ package presentation;
 
 import business.ativos.Ativo;
 import business.CFD;
+import business.ativos.AtivoConsts;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;
 import business.facade.FacadeNegociador;
@@ -154,7 +155,7 @@ public class TextUINegociador implements UINegociador {
         System.out.println(lang.getInsertTypeofAsset());
         System.out.println(listOptions(options));
         int tipo = chooseOption(options.size(), options.size() - 1);
-        List<Ativo> ativos = this.facade.getAtivos(options.get(tipo));
+        List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[tipo]);
         ativos.forEach(a -> System.out.println(a.toString())); // update to customize according to lang
         showPaginaInicial();
     }

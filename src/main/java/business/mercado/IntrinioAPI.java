@@ -91,7 +91,7 @@ public class IntrinioAPI implements Mercado {
 		SecurityApi securityApi = new SecurityApi();
 
 		// String | A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)
-		LocalDate startDate = LocalDate.now().minusDays(3); // LocalDate | Return prices on or after the date
+		LocalDate startDate = LocalDate.now().minusDays(4); // LocalDate | Return prices on or after the date
 		LocalDate endDate = LocalDate.now(); // LocalDate | Return prices on or before the date
 		String frequency = "daily"; // String | Return stock prices in the given frequency
 		Integer pageSize = 100; // Integer | The number of results to return
