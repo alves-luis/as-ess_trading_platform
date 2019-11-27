@@ -203,7 +203,13 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showEncerrarCFD() {
-        //TODO
+        GetCFDsUILanguage lang = this.factory.getCFDsUILanguage();
+        List<CFD> cfds;
+        try {
+            cfds = this.facade.getCFDs(this.nif);
+        } catch (NegociadorNaoExisteException e) {
+            cfds = new ArrayList<>();
+        }
 
     }
 

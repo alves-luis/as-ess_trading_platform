@@ -421,31 +421,36 @@ public class AtivoDAO implements Map<String,Ativo>{
 			if (this.containsKey(s)) {
 				st = c.prepareStatement("update ativo set id = ?, nome = ?, valorporunidade = ? where id = ?;");
 				st.setString(4,ativo.getId());
+
+				st.setString(1,ativo.getId());
+				st.setString(2,ativo.getNome());
+				st.setDouble(3,ativo.getValorPorUnidade());
 			}
 			else {
 				st = c.prepareStatement("insert into ativo values (?, ?, ?);");
+
+
+				st.setString(1, ativo.getId());
+				st.setString(2, ativo.getNome());
+				st.setDouble(3, ativo.getValorPorUnidade());
+
+				int updated = st.executeUpdate();
+
+				if (updated == 0)
+					return null;
+
+				if (ativo instanceof Acao)
+					ativo = putAcao(c, ativo);
+
+				if (ativo instanceof Moeda)
+					ativo = putMoeda(c, ativo);
+
+				if (ativo instanceof Indice)
+					ativo = putIndice(c, ativo);
+
+				if (ativo instanceof Commodity)
+					ativo = putCommodity(c, ativo);
 			}
-
-			st.setString(1,ativo.getId());
-			st.setString(2,ativo.getNome());
-			st.setDouble(3,ativo.getValorPorUnidade());
-
-			int updated = st.executeUpdate();
-
-			if (updated == 0)
-				return null;
-
-			if(ativo instanceof Acao)
-				res = putAcao(c,ativo);
-
-			if(ativo instanceof Moeda)
-				res = putMoeda(c,ativo);
-
-			if(ativo instanceof Indice)
-				res = putIndice(c,ativo);
-
-			if(ativo instanceof Commodity)
-			    res = putCommodity(c,ativo);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -453,7 +458,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		Connect.close(c);
 
-		return res;
+		return ativo;
 
 	}
 

@@ -2,6 +2,8 @@ package persistence;
 
 import business.ativos.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -65,6 +67,5 @@ public class DaoHelper {
     protected static String getFullInformationForType(String tipo){
         return "select * from " + tipo +"ativo INNER JOIN ativo ON ativo.id = "+ tipo + "ativo.idativo INNER JOIN "+ tipo +" ON " + tipo +".id = "+ tipo +"ativo.id"+ tipo +";";
     }
-
 
 }
