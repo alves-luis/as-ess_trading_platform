@@ -65,6 +65,7 @@ public class CreateBD {
         try {
             s = c.createStatement();
             s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");
+            s.executeUpdate("insert into negociador values('918895246', 'Rafaela Rodrigues', 'rafaela@gmail,com', '12345', 0)");
         }
         catch (SQLException e) {
             e.printStackTrace();

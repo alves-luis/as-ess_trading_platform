@@ -145,8 +145,23 @@ public class TextUINegociador implements UINegociador {
         }
     }
 
+
+
     private void showAdicionarSaldo() {
-        // TODO
+        UILanguage lang = this.factory.getLang();
+        System.out.println(lang.getInsertValue());
+        double saldo = getDouble();
+        double saldoFinal;
+        try {
+            saldoFinal = this.facade.atualizarSaldo(this.nif, saldo);
+        }
+        catch(NegociadorNaoExisteException e) {
+            saldoFinal=0;
+        }
+        System.out.println(lang.getSaldo() + saldoFinal);
+        showPaginaInicial();
+
+
     }
 
     private void showConsultarAtivos() {
@@ -188,7 +203,7 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showEncerrarCFD() {
-
+        //TODO
 
     }
 
@@ -240,6 +255,27 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showMenuRegistar() {
+        UILanguage lang = this.factory.getLang();
+        System.out.println(lang.getInsertYourNif());
+        int nif = getInt();
+        System.out.println(lang.getInsertName());
+        String nome = getString();
+        System.out.println(lang.getInsertEmail());
+        String email = getString();
+        System.out.println(lang.getInsertYourPassword());
+        String password = getString();
+        System.out.println(lang.getInsertSaldo());
+        double saldo = getDouble();
+        boolean inserted = this.facade.registarNegociador(nif,nome,email,password,saldo);
+        if (inserted) {
+            System.out.println(lang.getNegociatorInserted());
+            this.nif= nif;
+            showPaginaInicial();
+        }
+        else{
+            System.out.println(lang.getNegociatorNotInserted());
+            showMenuRegistar();
+        }
     }
 
     private void showAdeus() {

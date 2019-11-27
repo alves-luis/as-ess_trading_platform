@@ -30,7 +30,7 @@ public class CFDAtivoDao implements List<Observer> {
         int result = 0;
 
         try {
-            s = c.prepareStatement("select count(*) from ativo where id = ?;");
+            s = c.prepareStatement("select count(*) from cfd where idativo = ?;");
             s.setString(1, this.idAtivo);
 
             ResultSet resultSet = s.executeQuery();
@@ -96,11 +96,15 @@ public class CFDAtivoDao implements List<Observer> {
             s.setInt(3, cfd.getId());
 
             s.executeUpdate();
+
+            Connect.close(c);
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        Connect.close(c);
         return false;
     }
 
@@ -150,7 +154,7 @@ public class CFDAtivoDao implements List<Observer> {
             return null;
         }
 
-        PreparedStatement s = null;
+        PreparedStatement s;
         try {
             s = c.prepareStatement("select * from cfd where idativo = ?");
             s.setString(1,this.idAtivo);
@@ -176,6 +180,8 @@ public class CFDAtivoDao implements List<Observer> {
             Observer n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
 
             resultSet.close();
+
+            Connect.close(c);
             return n;
         }
         catch (SQLException e) {

@@ -121,4 +121,35 @@ public class PortuguesUILanguage implements UILanguage {
     public String getInvalidLimit() {
         return "Limite inválido! Vai estabelecer o CFD sem o limite";
     }
+
+    @Override
+    public String getSaldo() {
+        return "O seu saldo é de: ";
+    }
+
+    @Override
+    public String getInsertName() {
+        return "Insira o seu nome: ";
+    }
+
+    @Override
+    public String getInsertEmail() {
+        return "Insira o seu email: ";
+    }
+
+    @Override
+    public String getInsertSaldo() {
+        return "Insira o saldo inicial: ";
+    }
+
+    @Override
+    public String getNegociatorInserted() {
+        return "A sua conta foi criada com sucesso!";
+    }
+
+    @Override
+    public String getNegociatorNotInserted() {
+        return "Desculpe, houve um erro. Tente novamente!";
+    }
+
 }

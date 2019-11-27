@@ -3,9 +3,7 @@ package persistence;
 import business.ativos.*;
 
 import java.sql.*;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AtivoDAO implements Map<String,Ativo>{
 
@@ -243,6 +241,8 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		String key = (String) o;
 
+		Ativo ativo = null;
+
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement("select * from ativo where id = ?");
@@ -257,7 +257,6 @@ public class AtivoDAO implements Map<String,Ativo>{
 			String nome = resultSet.getString("nome");
 			double valorPorUnidade = resultSet.getDouble("valorporunidade");
 
-            Ativo ativos;
 
 			String classeAtivo = getClassAtivo(c,key);
 
@@ -266,16 +265,16 @@ public class AtivoDAO implements Map<String,Ativo>{
             }
 
 			else if (classeAtivo.equals("moeda"))
-                return getMoeda(c,id, nome, valorPorUnidade);
+                ativo = getMoeda(c,id, nome, valorPorUnidade);
 
 			else if (classeAtivo.equals("indice"))
-                return getIndice(c,id, nome, valorPorUnidade);
+                ativo = getIndice(c,id, nome, valorPorUnidade);
 
 			else if (classeAtivo.equals("commodity"))
-                return getCommodity(c,id, nome, valorPorUnidade);
+                ativo = getCommodity(c,id, nome, valorPorUnidade);
 
 			resultSet.close();
-			return null;
+
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -283,7 +282,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		Connect.close(c);
 
-		return null;
+		return ativo;
 	}
 
 	private Ativo putAcao(Connection c, Ativo ativo){
@@ -404,6 +403,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 	@Override
 	public Ativo put(String s, Ativo ativo) {
+
 		Connection c = Connect.connect();
 		if (c == null) {
 			System.out.println("Can't connect!");
@@ -412,6 +412,8 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		if (!s.equals(ativo.getId()))
 			return null;
+
+		Ativo res = null;
 
 		PreparedStatement st;
 		try {
@@ -434,16 +436,16 @@ public class AtivoDAO implements Map<String,Ativo>{
 				return null;
 
 			if(ativo instanceof Acao)
-				return putAcao(c,ativo);
+				res = putAcao(c,ativo);
 
 			if(ativo instanceof Moeda)
-				return putMoeda(c,ativo);
+				res = putMoeda(c,ativo);
 
 			if(ativo instanceof Indice)
-				return putIndice(c,ativo);
+				res = putIndice(c,ativo);
 
 			if(ativo instanceof Commodity)
-			    return putCommodity(c,ativo);
+			    res = putCommodity(c,ativo);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -451,7 +453,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		Connect.close(c);
 
-		return null;
+		return res;
 
 	}
 
@@ -477,7 +479,24 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 	@Override
 	public Collection<Ativo> values() {
-		return null;
+
+		Connection c = Connect.connect();
+		if (c == null){
+			return null;
+		}
+
+		AtivoTipoDAO a = new AtivoTipoDAO();
+
+		List<Ativo> ativos = new ArrayList<>();
+
+		for(int i = 0; i<AtivoConsts.TOTAL_TIPOS_ATIVOS; i++) {
+
+			ativos.addAll(a.get(AtivoConsts.ALL_ATIVOS[i]));
+		}
+
+		Connect.close(c);
+
+		return ativos;
 	}
 
 	@Override
