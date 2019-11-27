@@ -11,4 +11,10 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     String getNonExistentCredentials();
     // Pagina Inicial
     List<String> getInitialPageOptions();
+    String getSaldo();
+    String getInsertName();
+    String getInsertEmail();
+    String getInsertSaldo();
+    String getNegociatorInserted();
+    String getNegociatorNotInserted();
 }
