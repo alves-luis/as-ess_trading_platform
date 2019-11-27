@@ -3,6 +3,7 @@ package presentation;
 import business.ativos.Ativo;
 import business.CFD;
 import business.ativos.AtivoConsts;
+import business.exceptions.CFDNaoExisteException;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;
 import business.facade.FacadeNegociador;
@@ -175,7 +176,7 @@ public class TextUINegociador implements UINegociador {
         showPaginaInicial();
     }
 
-    private void showConsultarCFDs() {
+    private void showCFDsAbertos(){
         GetCFDsUILanguage lang = this.factory.getCFDsUILanguage();
         List<CFD> cfds;
         try {
@@ -199,18 +200,28 @@ public class TextUINegociador implements UINegociador {
             format.forEach(System.out::println);
             System.out.println(delimiter);
         }
+    }
+
+    private void showConsultarCFDs() {
+        showCFDsAbertos();
         showPaginaInicial();
     }
 
     private void showEncerrarCFD() {
-        GetCFDsUILanguage lang = this.factory.getCFDsUILanguage();
-        List<CFD> cfds;
+        UILanguage lang = this.factory.getLang();
+        System.out.println(lang.getInsertCFDtoEnd());
+        this.showCFDsAbertos();
+        int id = getInt();
         try {
-            cfds = this.facade.getCFDs(this.nif);
-        } catch (NegociadorNaoExisteException e) {
-            cfds = new ArrayList<>();
+            double valorFinal = this.facade.getSaldo(this.nif);
+            double valorCFD = this.facade.fecharCFD(id);
+            System.out.println(lang.getCFDClosed() + valorCFD + lang.getEuro());
+            System.out.println(lang.getSaldo() + valorFinal + lang.getEuro());
         }
-
+        catch (CFDNaoExisteException e){
+            System.out.println(e.toString());
+        }
+        showPaginaInicial();
     }
 
     private void showEstabelecerCFD() {

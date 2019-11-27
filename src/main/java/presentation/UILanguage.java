@@ -17,4 +17,7 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     String getInsertSaldo();
     String getNegociatorInserted();
     String getNegociatorNotInserted();
+    String getInsertCFDtoEnd();
+    String getCFDClosed();
+    String getEuro();
 }

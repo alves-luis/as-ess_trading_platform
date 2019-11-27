@@ -152,4 +152,19 @@ public class PortuguesUILanguage implements UILanguage {
         return "Desculpe, houve um erro. Tente novamente!";
     }
 
+    @Override
+    public String getInsertCFDtoEnd() {
+        return "Indique o CFD que pretende terminar: ";
+    }
+
+    @Override
+    public String getCFDClosed() {
+        return "O CFD foi terminado com sucesso!\nO CFD terminou com o valor de ";
+    }
+
+    @Override
+    public String getEuro() {
+        return "€";
+    }
+
 }

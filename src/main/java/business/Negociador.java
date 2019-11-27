@@ -102,8 +102,10 @@ public class Negociador {
     	List<CFD> result = new ArrayList<>();
     	for(int i = 0; i < this.cfds.size(); i++) {
 			CFD c = this.cfds.get(i);
-			if (c.isAberto())
-				result.add(c);
+			if (c != null) {
+				if (c.isAberto())
+					result.add(c);
+			}
 		}
     	return result;
 	}

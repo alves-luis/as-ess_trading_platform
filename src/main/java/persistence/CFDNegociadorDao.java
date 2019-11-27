@@ -28,7 +28,7 @@ public class CFDNegociadorDao implements List<CFD>{
 		try {
 			s = c.createStatement();
 
-			ResultSet rs = s.executeQuery("select count(*) from cfd where nifnegociador = " + nifNegociador);
+			ResultSet rs = s.executeQuery("select count(*) from cfd where nifnegociador = " + nifNegociador +" and aberto = true");
 			rs.next();
 			result = rs.getInt(1);
 			rs.close();
@@ -122,6 +122,7 @@ public class CFDNegociadorDao implements List<CFD>{
 			ResultSet resultSet = s.executeQuery();
 			if (!resultSet.isBeforeFirst())
 				return null;
+
 
 			while(i >= 0) {
 				resultSet.next();
