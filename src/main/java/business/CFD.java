@@ -41,7 +41,7 @@ public abstract class CFD implements Observer {
 	}
 
 	public double getValorInvestido() {
-		throw new UnsupportedOperationException();
+		return this.unidadesDeAtivo * this.valorPorUnidadeNaCompra;
 	}
 
 	public void setTakeProfit(double max) {

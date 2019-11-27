@@ -1,15 +1,44 @@
 package persistence;
 
 import business.CFD;
+import business.Long;
 
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class CFDNegociadorDao implements List<CFD>{
 	private Integer nifNegociador;
 
+	public CFDNegociadorDao(int nif) {
+		this.nifNegociador = nif;
+	}
+
 	@Override
 	public int size() {
-		return 0;
+		Connection c = Connect.connect();
+		if (c == null) {
+			System.out.println("Can't connect!");
+			return 0;
+		}
+
+		Statement s = null;
+		int result = 0;
+
+		try {
+			s = c.createStatement();
+
+			ResultSet rs = s.executeQuery("select count(*) from cfd where nifnegociador = " + nifNegociador);
+			rs.next();
+			result = rs.getInt(1);
+			rs.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		Connect.close(c);
+
+		return result;
 	}
 
 	@Override
@@ -79,6 +108,48 @@ public class CFDNegociadorDao implements List<CFD>{
 
 	@Override
 	public CFD get(int i) {
+		Connection c = Connect.connect();
+		if (c == null) {
+			System.out.println("Can't connect!");
+			return null;
+		}
+
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement("select * from cfd where nifnegociador = ? and aberto = true");
+			s.setInt(1,this.nifNegociador);
+
+			ResultSet resultSet = s.executeQuery();
+			if (!resultSet.isBeforeFirst())
+				return null;
+
+			while(i >= 0) {
+				resultSet.next();
+				i--;
+			}
+			int id = resultSet.getInt("id");
+			LocalDateTime data = resultSet.getTimestamp("data").toLocalDateTime();
+			double udativo = resultSet.getDouble("unidadesdeativo");
+			double vpuc = resultSet.getDouble("valorporunidadenacompra");
+			Double limitesup = resultSet.getDouble("limitesup");
+			Double limiteinf = resultSet.getDouble("limiteinf");
+			String idAtivo = resultSet.getString("idativo");
+			int nif = resultSet.getInt("nifnegociador");
+			boolean aberto = resultSet.getBoolean("aberto");
+
+			CFD n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
+
+			resultSet.close();
+
+			Connect.close(c);
+			return n;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		Connect.close(c);
+
 		return null;
 	}
 

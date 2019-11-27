@@ -10,6 +10,22 @@ public class Short extends CFD {
 
     @Override
     public boolean update(double valorAtivo) {
-        throw new UnsupportedOperationException();
+        if (!this.isAberto()) // se CFD fechado, não atualizou
+            return false;
+        double valorCFD = this.getUnidadesDeAtivo() * valorAtivo;
+        Double takeprofit = this.getLimitSup();
+        Double stoploss = this.getLimiteInf();
+
+        boolean atualizou = false;
+        if (takeprofit != null && valorCFD <= takeprofit) {
+            this.fecharCFD(valorAtivo);
+            atualizou = true;
+        }
+        if (stoploss != null && valorCFD >= stoploss) {
+            this.fecharCFD(valorAtivo);
+            atualizou = true;
+        }
+
+        return atualizou;
     }
 }

@@ -93,7 +93,7 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
 
         Integer key = (Integer) o;
 
-        PreparedStatement s = null;
+        PreparedStatement s;
         try {
             s = c.prepareStatement("select * from negociador where nif = ?");
             s.setInt(1,key);
@@ -112,6 +112,7 @@ public class NegociadorDAO implements Map<Integer, Negociador> {
             Negociador n = new Negociador(nif, nome, email, password, saldo);
 
             resultSet.close();
+            Connect.close(c);
             return n;
         }
         catch (SQLException e) {
