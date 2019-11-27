@@ -213,7 +213,7 @@ public class TextUINegociador implements UINegociador {
         Double takeProfitValue = definirLimite("Take Profit", investimento);
 
         try {
-            CFD cfd = this.facade.registarCFD(ativos.get(ativo).getId(), this.nif, unidades, stopLossValue, takeProfitValue, "Short");
+            CFD cfd = this.facade.registarCFD(ativos.get(ativo).getId(), this.nif, unidades, stopLossValue, takeProfitValue, "Long");
             System.out.println(lang.getCFDEstablishedWithSuccess());
             System.out.println(cfd.toString());
         } catch (NegociadorNaoExisteException e) {
