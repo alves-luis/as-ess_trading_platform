@@ -2,6 +2,7 @@ package business.facade;
 
 import business.*;
 import business.Long;
+import business.Short;
 import business.ativos.Ativo;
 import business.exceptions.CFDNaoExisteException;
 import business.exceptions.NegociadorNaoExisteException;
@@ -89,10 +90,16 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 			throw new NegociadorNaoPossuiSaldoSuficienteException(investimento, nifNegociador);
 
 		int id = cfds.size();
+		CFD c;
 		// by default creating long positions
-		CFD c = new Long(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(),limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
-		this.cfds.put(c.getId(),c);
+		if (tipo.equals("Long")) {
+			c = new Long(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(), limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
 		this.atualizarSaldo(nifNegociador, -investimento);
+		}
+		else {
+			c = new Short(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(), limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
+		}
+		this.cfds.put(c.getId(),c);
 
 		ativo.registerObserver(c);
 

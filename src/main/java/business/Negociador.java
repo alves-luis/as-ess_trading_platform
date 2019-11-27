@@ -20,7 +20,7 @@ public class Negociador {
     	this.email = email;
     	this.password = password;
     	this.saldo = saldo;
-    	this.cfds = new CFDNegociadorDao();
+    	this.cfds = new CFDNegociadorDao(nif);
     }
 
 	/**
