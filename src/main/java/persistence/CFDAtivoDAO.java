@@ -2,6 +2,7 @@ package persistence;
 
 import business.CFD;
 import business.Long;
+import business.Negociador;
 import business.Observer;
 
 import java.sql.*;
@@ -11,10 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class CFDAtivoDao implements List<Observer> {
+public class CFDAtivoDAO implements List<Observer> {
     private String idAtivo;
 
-    public CFDAtivoDao(String id) {
+    public CFDAtivoDAO(String id) {
         this.idAtivo = id;
     }
 
@@ -26,7 +27,7 @@ public class CFDAtivoDao implements List<Observer> {
             return 0;
         }
 
-        PreparedStatement s = null;
+        PreparedStatement s;
         int result = 0;
 
         try {
@@ -36,6 +37,14 @@ public class CFDAtivoDao implements List<Observer> {
             ResultSet resultSet = s.executeQuery();
             resultSet.next();
             result = resultSet.getInt(1);
+
+            s = c.prepareStatement("select count(*) from negociadorativo where idativo = ?");
+            s.setString(1, this.idAtivo);
+
+            resultSet = s.executeQuery();
+            resultSet.next();
+            result += resultSet.getInt(1);
+
             resultSet.close();
 
         } catch (SQLException e) {
@@ -72,23 +81,38 @@ public class CFDAtivoDao implements List<Observer> {
         return null;
     }
 
-    @Override
-    public boolean add(Observer observer) {
-        Connection c = Connect.connect();
-        if (c == null) {
-            System.out.println("Can't connect!");
+    private boolean addNegociador(Negociador n, Connection c) {
+        if (n.isSeguindoAtivo(this.idAtivo)) {
+            Connect.close(c);
+            return false;
+        }
+        boolean success = false;
+
+        PreparedStatement s;
+        try {
+            s = c.prepareStatement("delete from cfd where idnegociador = ? and idativo = ?");
+            s.setInt(1, n.getNif());
+            s.setString(2, this.idAtivo);
+
+            s.executeUpdate();
+            success = true;
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Connect.close(c);
+        return success;
+    }
+
+    private boolean addCFD(CFD cfd, Connection c) {
+        if (cfd.isAberto()) {
+            Connect.close(c);
             return false;
         }
 
-        // we need to ignore the pattern here, to save our DB state :/!
-        if (!(observer instanceof CFD))
-            return false;
-
-        CFD cfd = (CFD) observer;
-        if (cfd.isAberto())
-            return false;
-
-        PreparedStatement s = null;
+        boolean success = false;
+        PreparedStatement s;
         try {
             s = c.prepareStatement("update cfd set aberto = ?, valorporunidadenofim = ? where cfd.id = ?; ");
             s.setBoolean(1, cfd.isAberto());
@@ -97,12 +121,44 @@ public class CFDAtivoDao implements List<Observer> {
 
             s.executeUpdate();
 
-            Connect.close(c);
+            s = c.prepareStatement("select saldo from negociador where nif = ?");
+            s.setInt(1, cfd.getNifNegociador());
 
-            return true;
+            ResultSet rs = s.executeQuery();
+            rs.next();
+            double saldo = rs.getDouble(1);
+            double novoSaldo = cfd.getGanhoDoFecho() + saldo;
+
+            s = c.prepareStatement("update negociador set saldo = ? where nif = ?");
+            s.setDouble(1, novoSaldo);
+            s.setInt(2, cfd.getNifNegociador());
+
+            s.executeUpdate();
+
+
+            success = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        Connect.close(c);
+
+        return success;
+    }
+
+    @Override
+    public boolean add(Observer observer) {
+        Connection c = Connect.connect();
+        if (c == null) {
+            System.out.println("Can't connect!");
+            return false;
+        }
+
+        // we need to ignore the pattern here :(
+        if (observer instanceof Negociador)
+            return addNegociador((Negociador) observer, c);
+        else if (observer instanceof CFD)
+            return addCFD((CFD) observer, c);
 
         Connect.close(c);
         return false;

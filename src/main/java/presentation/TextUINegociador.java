@@ -194,7 +194,8 @@ public class TextUINegociador implements UINegociador {
                     lang.getAsset() + " | " + cfd.getIdAtivo(),
                     lang.getUnitsOfAsset() + " | " + cfd.getUnidadesDeAtivo(),
                     lang.getInvestedValue() + " | " + cfd.getValorInvestido() + "€",
-                    lang.getInvestedValueInCaseOfRefund() + " | " + en.getValue() + "€"));
+                    lang.getInvestedValueInCaseOfRefund() + " | " + en.getValue() + "€",
+                    lang.getTipoCFD() + " | " + cfd.getTipo()));
             String delimiter = "-".repeat(format.get(format.size()-1).length());
             System.out.println(delimiter);
             format.forEach(System.out::println);
@@ -213,8 +214,8 @@ public class TextUINegociador implements UINegociador {
         this.showCFDsAbertos();
         int id = getInt();
         try {
-            double valorFinal = this.facade.getSaldo(this.nif);
             double valorCFD = this.facade.fecharCFD(id);
+            double valorFinal = this.facade.getSaldo(this.nif);
             System.out.println(lang.getCFDClosed() + valorCFD + lang.getEuro());
             System.out.println(lang.getSaldo() + valorFinal + lang.getEuro());
         }
@@ -227,15 +228,22 @@ public class TextUINegociador implements UINegociador {
     private void showEstabelecerCFD() {
         SetCFDUILanguage lang = this.factory.getSetCFDUILanguage();
         List<String> options = this.factory.getAssetsUILanguage().getTypesOfAssets();
-        System.out.print(listOptions(options));
+        System.out.print(listOptions(options)); // print types of assets
         int typeOfAtivo = chooseOption(options.size(), options.size() - 1);
         List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[typeOfAtivo]);
 
         List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
         System.out.println(lang.getInsertAssetToInvest());
-        System.out.print(listOptions(ativosAsString));
+        System.out.print(listOptions(ativosAsString)); // print assets of given type
 
         int ativo = chooseOption(ativos.size(), ativos.size() - 1);
+
+        List<String> tiposCFD = lang.getTypesOfCFD();
+        System.out.println(lang.getChooseTypeOfCFD());
+        System.out.println(listOptions(tiposCFD));
+        int tipoCFD = chooseOption(0, 1);
+        String tipo = tiposCFD.get(tipoCFD);
+
         double saldo = this.facade.getSaldo(this.nif);
         System.out.println(lang.getInsertUnitsToInvest() + "\n" + lang.getYouHave() + saldo + lang.getToInvest());
         double unidades = getDouble();
@@ -245,7 +253,7 @@ public class TextUINegociador implements UINegociador {
         Double takeProfitValue = definirLimite("Take Profit", investimento);
 
         try {
-            CFD cfd = this.facade.registarCFD(ativos.get(ativo).getId(), this.nif, unidades, stopLossValue, takeProfitValue, "Long");
+            CFD cfd = this.facade.registarCFD(ativos.get(ativo).getId(), this.nif, unidades, stopLossValue, takeProfitValue, tipo);
             System.out.println(lang.getCFDEstablishedWithSuccess());
             System.out.println(cfd.toString());
         } catch (NegociadorNaoExisteException e) {

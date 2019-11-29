@@ -12,6 +12,12 @@ public class Short extends CFD {
         super(id, data, unidadesDeCompra, valor, limiteMin, limiteMax, ativoId, nifNegociador, aberto);
     }
 
+    public Short(int id, LocalDateTime data, double unidadesDeCompra, double valor, Double limiteMin, Double limiteMax,
+                String idAtivo, int nifNegociador, boolean aberto, double valorPorUnidadeFinal) {
+
+        super(id, data, unidadesDeCompra, valor, limiteMin, limiteMax, idAtivo, nifNegociador, aberto, valorPorUnidadeFinal);
+    }
+
     public double getGanhoDoFecho() {
         if (this.isAberto()) // se CFD aberto, não valoriza
             return 0;
@@ -22,5 +28,14 @@ public class Short extends CFD {
 
     public double getValorCFD(double valorAtivo) {
         return formula(this.getValorInvestido(), this.getUnidadesDeAtivo() * valorAtivo);
+    }
+
+    public String toString() {
+        String s = super.toString();
+        return s + "Short";
+    }
+
+    public String getTipo() {
+        return "Short";
     }
 }

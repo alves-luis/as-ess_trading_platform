@@ -73,6 +73,11 @@ public class PortuguesUILanguage implements UILanguage {
     }
 
     @Override
+    public String getTipoCFD() {
+        return "Tipo de CFD:";
+    }
+
+    @Override
     public String getInsertAssetToInvest() {
         return "Indique o ativo no qual deseja investir:";
     }
@@ -120,6 +125,16 @@ public class PortuguesUILanguage implements UILanguage {
     @Override
     public String getInvalidLimit() {
         return "Limite inválido! Vai estabelecer o CFD sem o limite";
+    }
+
+    @Override
+    public String getChooseTypeOfCFD() {
+        return "Escolha o tipo de CFD que deseja estabelecer:";
+    }
+
+    @Override
+    public List<String> getTypesOfCFD() {
+        return new ArrayList<>(Arrays.asList("Long", "Short"));
     }
 
     @Override

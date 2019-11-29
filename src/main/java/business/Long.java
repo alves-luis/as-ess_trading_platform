@@ -25,4 +25,13 @@ public class Long extends CFD {
     public double getValorCFD(double valorAtivo) {
         return this.getUnidadesDeAtivo() * valorAtivo;
     }
+
+    public String toString() {
+        String s = super.toString();
+        return s + "Long";
+    }
+
+    public String getTipo() {
+        return "Long";
+    }
 }

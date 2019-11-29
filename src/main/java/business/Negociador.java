@@ -109,4 +109,8 @@ public class Negociador {
 		}
     	return result;
 	}
+
+	public boolean isSeguindoAtivo(String id) {
+		return true; // TODO
+	}
 }
