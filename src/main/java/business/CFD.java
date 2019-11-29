@@ -156,6 +156,10 @@ public abstract class CFD implements Observer {
 		}
 
 		return atualizou;
-
 	}
+
+	/**
+	 * @return retorna o nome do tipo de CFD (useful para UI)
+	 */
+	public abstract String getTipo();
 }

@@ -2,6 +2,7 @@ package persistence;
 
 import business.CFD;
 import business.Long;
+import business.Short;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class CFDDao implements Map<Integer, CFD> {
+public class CFDDAO implements Map<Integer, CFD> {
 
     @Override
     public int size() {
@@ -89,14 +90,14 @@ public class CFDDao implements Map<Integer, CFD> {
 
         Integer key = (Integer) o;
 
-        PreparedStatement s =  null;
+        PreparedStatement s;
 
         try{
             s = c.prepareStatement("select * from cfd where id = ?;");
             s.setInt(1,key);
 
-            ResultSet resultSet= s.executeQuery();
-            //não há CFD com aquele id
+            ResultSet resultSet = s.executeQuery();
+            // não há CFD com aquele id
             if(!resultSet.isBeforeFirst())
                 return null;
 
@@ -120,11 +121,17 @@ public class CFDDao implements Map<Integer, CFD> {
             CFD cfd;
             if (!aberto) {
                 double valorUnidFim = resultSet.getDouble("valorporunidadenofim");
-                cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto, valorUnidFim);
-
+                if (isLong)
+                    cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto, valorUnidFim);
+                else
+                    cfd = new Short(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto, valorUnidFim);
             }
             else {
-                cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto);
+                if (isLong)
+                    cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto);
+                else
+                    cfd = new Short(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto);
+
             }
 
             resultSet.close();
@@ -154,7 +161,7 @@ public class CFDDao implements Map<Integer, CFD> {
             return null;
         }
 
-        PreparedStatement s = null;
+        PreparedStatement s;
         try{
             if(this.containsKey(integer)){
                 s = c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = ?, valorporunidadenofim = ?, long = ? where id = " + cfd.getId());

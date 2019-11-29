@@ -1,5 +1,7 @@
 package presentation;
 
+import java.util.List;
+
 public interface SetCFDUILanguage {
     String getInsertAssetToInvest();
     String getInsertUnitsToInvest();
@@ -11,4 +13,8 @@ public interface SetCFDUILanguage {
     String getYouWillInvest();
     String getInsertValue();
     String getInvalidLimit();
+
+    String getChooseTypeOfCFD();
+
+    List<String> getTypesOfCFD();
 }

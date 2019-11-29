@@ -64,7 +64,7 @@ public class CreateBD {
     }
 
     private static void populateRelations(Connection c) {
-        Statement s = null;
+        Statement s;
         try {
             s = c.createStatement();
             s.executeUpdate("insert into negociador values('274129914', 'Luís Alves', 'luismig.alves@gmail.com', '12345', 0)");

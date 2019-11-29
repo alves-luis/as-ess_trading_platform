@@ -7,7 +7,7 @@ import business.ativos.Ativo;
 import business.exceptions.CFDNaoExisteException;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;
-import persistence.CFDDao;
+import persistence.CFDDAO;
 import persistence.NegociadorDAO;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 
 	public TradingPlatformNegociador() {
 		this.ativos = new AtivoManager();
-		this.cfds = new CFDDao();
+		this.cfds = new CFDDAO();
 		this.negociadores = new NegociadorDAO();
 	}
 
@@ -94,11 +94,11 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		// by default creating long positions
 		if (tipo.equals("Long")) {
 			c = new Long(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(), limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
-		this.atualizarSaldo(nifNegociador, -investimento);
 		}
 		else {
 			c = new Short(id, LocalDateTime.now(), unidadesDeCompra, ativo.getValorPorUnidade(), limiteMin, limiteMax, ativo.getId(), nifNegociador, true);
 		}
+		this.atualizarSaldo(nifNegociador, -investimento);
 		this.cfds.put(c.getId(),c);
 
 		ativo.registerObserver(c);
@@ -121,9 +121,7 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		c.fecharCFD(a.getValorPorUnidade());
 		this.cfds.put(id,c); // to update state
 
-
-		double valorAtivo = a.getValorPorUnidade();
-		double saldoAAdicionar = valorAtivo * c.getUnidadesDeAtivo();
+		double saldoAAdicionar = c.getGanhoDoFecho();
 
 		try {
 			this.atualizarSaldo(c.getNifNegociador(), saldoAAdicionar);

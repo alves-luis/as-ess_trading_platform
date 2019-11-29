@@ -6,4 +6,5 @@ public interface GetCFDsUILanguage {
     String getInvestedValue();
     String getInvestedValueInCaseOfRefund();
     String getTimestamp();
+    String getTipoCFD();
 }

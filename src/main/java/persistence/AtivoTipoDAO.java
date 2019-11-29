@@ -46,7 +46,7 @@ public class AtivoTipoDAO implements Map<String, List<Ativo>> {
 
         try{
             s = c.prepareStatement( DAOHelper.getFullInformationForType(tipo));
-
+            
             ResultSet resultSet = s.executeQuery();
 
             if (!resultSet.isBeforeFirst())
