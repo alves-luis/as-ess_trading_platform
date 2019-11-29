@@ -45,7 +45,7 @@ public class AtivoTipoDAO implements Map<String, List<Ativo>> {
         PreparedStatement s;
 
         try{
-            s = c.prepareStatement( DaoHelper.getFullInformationForType(tipo));
+            s = c.prepareStatement( DAOHelper.getFullInformationForType(tipo));
 
             ResultSet resultSet = s.executeQuery();
 
@@ -61,19 +61,19 @@ public class AtivoTipoDAO implements Map<String, List<Ativo>> {
                 double valorPorUnidade = resultSet.getDouble("valorporunidade");
 
                 if (tipo.equals("acao")){
-                    ativos.add(DaoHelper.getAcao(resultSet,id,nome,valorPorUnidade));
+                    ativos.add(DAOHelper.getAcao(resultSet,id,nome,valorPorUnidade));
                 }
 
                 if (tipo.equals("moeda")){
-                    ativos.add(DaoHelper.getMoeda(resultSet,id,nome,valorPorUnidade));
+                    ativos.add(DAOHelper.getMoeda(resultSet,id,nome,valorPorUnidade));
                 }
 
                 if (tipo.equals("indice")){
-                    ativos.add(DaoHelper.getIndice(resultSet,id,nome,valorPorUnidade));
+                    ativos.add(DAOHelper.getIndice(resultSet,id,nome,valorPorUnidade));
                 }
 
                 if (tipo.equals("commodity")){
-                    ativos.add(DaoHelper.getCommodity(resultSet,id,nome,valorPorUnidade));
+                    ativos.add(DAOHelper.getCommodity(resultSet,id,nome,valorPorUnidade));
                 }
 
                 resultSet.next();

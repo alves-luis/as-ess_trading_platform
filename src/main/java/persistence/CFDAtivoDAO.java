@@ -11,10 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class CFDAtivoDao implements List<Observer> {
+public class CFDAtivoDAO implements List<Observer> {
     private String idAtivo;
 
-    public CFDAtivoDao(String id) {
+    public CFDAtivoDAO(String id) {
         this.idAtivo = id;
     }
 

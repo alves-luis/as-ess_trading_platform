@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DaoHelper {
+public class DAOHelper {
 
 
     protected static Acao getAcao(ResultSet rs, String id, String nome, double valorPorUnidade){

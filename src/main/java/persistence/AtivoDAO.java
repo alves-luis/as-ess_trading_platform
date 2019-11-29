@@ -55,7 +55,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 
 		String key = (String) o;
 
-		PreparedStatement s = null;
+		PreparedStatement s;
 		boolean result = false;
 
 		try {

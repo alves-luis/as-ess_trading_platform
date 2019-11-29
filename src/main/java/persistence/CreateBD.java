@@ -141,18 +141,6 @@ public class CreateBD {
         populateRelations(c);
         populateAtivos();
 
-/*
-        AtivoTipoDAO d = new AtivoTipoDAO();
-
-        List<Ativo> rr = d.get("commodity");
-
-        System.out.println(rr.toString());
-
-        System.out.println(rr.size());
-
-
- */
-
         Connect.close(c);
     }
 }

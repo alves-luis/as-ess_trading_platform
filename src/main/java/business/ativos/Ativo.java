@@ -4,7 +4,7 @@ import business.Observable;
 import business.mercado.IntrinioAPI;
 import business.mercado.Mercado;
 import business.Observer;
-import persistence.CFDAtivoDao;
+import persistence.CFDAtivoDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public abstract class Ativo implements Runnable, Observable {
 		this.id = id;
 		this.nome = nome;
 		this.valorPorUnidade = vpu;
-		this.observers = new CFDAtivoDao(id);
+		this.observers = new CFDAtivoDAO(id);
 		this.mercado = new IntrinioAPI();
 	}
 

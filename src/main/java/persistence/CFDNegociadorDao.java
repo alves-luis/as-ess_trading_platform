@@ -22,7 +22,7 @@ public class CFDNegociadorDao implements List<CFD>{
 			return 0;
 		}
 
-		Statement s = null;
+		Statement s;
 		int result = 0;
 
 		try {
