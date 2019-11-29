@@ -90,7 +90,7 @@ public class CFDAtivoDAO implements List<Observer> {
 
         PreparedStatement s;
         try {
-            s = c.prepareStatement("delete from cfd where idnegociador = ? and idativo = ?");
+            s = c.prepareStatement("delete from negociadorativo where idnegociador = ? and idativo = ?");
             s.setInt(1, n.getNif());
             s.setString(2, this.idAtivo);
 

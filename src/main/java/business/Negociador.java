@@ -1,18 +1,23 @@
 package business;
 
+import business.ativos.Ativo;
 import persistence.CFDNegociadorDao;
+import persistence.NegociadorAtivoDAO;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class Negociador {
+public class Negociador implements Observer {
+	private static final double TRIGGER_UPDATE_ATIVO = 0.2;
+
 	private int nif;
 	private String nome;
 	private String email;
 	private String password;
 	private double saldo;
 	private List<CFD> cfds;
+	private Map<String, Ativo> ativos;
 
     public Negociador(int nif, String nome, String email, String password, double saldo) {
     	this.nif = nif;
@@ -21,6 +26,7 @@ public class Negociador {
     	this.password = password;
     	this.saldo = saldo;
     	this.cfds = new CFDNegociadorDao(nif);
+    	this.ativos = new NegociadorAtivoDAO(nif);
     }
 
 	/**
@@ -110,7 +116,24 @@ public class Negociador {
     	return result;
 	}
 
-	public boolean isSeguindoAtivo(String id) {
-		return true; // TODO
+	public boolean isSeguindoAtivo(String idAtivo) {
+		return this.ativos.containsKey(idAtivo);
+	}
+
+	public void seguirAtivo(Ativo a) {
+		this.ativos.put(a.getId(), a);
+	}
+
+	@Override
+	public boolean update(double valorAtivo, String idAtivo) {
+		Ativo a = this.ativos.get(idAtivo);
+		double dif = Math.abs(a.getValorPorUnidade() - valorAtivo) / a.getValorPorUnidade();
+		if (dif > TRIGGER_UPDATE_ATIVO) {
+			this.ativos.remove(idAtivo);
+			System.out.println("Ativo variou mais de " + TRIGGER_UPDATE_ATIVO + "%! Valia " + a.getValorPorUnidade() + "€" +
+					" e agora vale " + valorAtivo + "€!");
+			return true;
+		}
+		return false;
 	}
 }

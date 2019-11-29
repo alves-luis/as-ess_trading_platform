@@ -7,7 +7,6 @@ import java.util.*;
 
 public class AtivoDAO implements Map<String,Ativo>{
 
-
 	@Override
 	public int size() {
 		Connection c = Connect.connect();

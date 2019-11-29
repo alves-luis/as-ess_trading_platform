@@ -136,7 +136,7 @@ public abstract class CFD implements Observer {
 		this.id=id;
 	}
 
-	public boolean update(double valorAtivo) {
+	public boolean update(double valorAtivo, String idAtivo) {
 		// se cfd fechado, retorna falso (nao atualizou)
 		if (!this.isAberto())
 			return false;
