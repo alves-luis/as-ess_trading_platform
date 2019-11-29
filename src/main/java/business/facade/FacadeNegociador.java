@@ -34,4 +34,6 @@ public interface FacadeNegociador {
     double getSaldo(int nif);
 
     double getValorAtualCFD(int idCFD);
+
+    void seguirAtivo(int nif, String idAtivo);
 }
