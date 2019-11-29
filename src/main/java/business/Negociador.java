@@ -119,7 +119,7 @@ public class Negociador implements Observer {
 		double dif = Math.abs(a.getValorPorUnidade() - valorAtivo) / a.getValorPorUnidade();
 		if (dif > TRIGGER_UPDATE_ATIVO) {
 			this.ativos.remove(idAtivo);
-			System.out.println("Ativo variou mais de " + TRIGGER_UPDATE_ATIVO + "%! Valia " + a.getValorPorUnidade() + "€" +
+			System.out.println("Ativo " + idAtivo + " variou mais de " + TRIGGER_UPDATE_ATIVO * 100 + "%! Valia " + a.getValorPorUnidade() + "€" +
 					" e agora vale " + valorAtivo + "€!");
 			return true;
 		}

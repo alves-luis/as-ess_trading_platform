@@ -144,6 +144,25 @@ public class NegociadorAtivoDAO implements Map<String, Ativo> {
 
     @Override
     public Ativo remove(Object o) {
+        Connection c = Connect.connect();
+        if (c == null) {
+            System.out.println("Could not connect!");
+            return null;
+        }
+
+        String idAtivo = (String) o;
+        PreparedStatement s;
+        try {
+            s = c.prepareStatement("delete from negociadorativo where idnegociador = ? and idativo = ?");
+            s.setInt(1, this.nifNegociador);
+            s.setString(2, idAtivo);
+
+            s.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Connect.close(c);
         return null;
     }
 

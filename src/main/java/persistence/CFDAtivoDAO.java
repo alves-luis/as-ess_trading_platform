@@ -2,6 +2,7 @@ package persistence;
 
 import business.CFD;
 import business.Long;
+import business.Short;
 import business.Negociador;
 import business.Observer;
 
@@ -202,6 +203,29 @@ public class CFDAtivoDAO implements List<Observer> {
         // do nothing
     }
 
+    private Observer getNegociador(Connection c, int i) {
+        try {
+            PreparedStatement s = c.prepareStatement("select * from negociadorativo where idativo = ?");
+            s.setString(1, this.idAtivo);
+
+            ResultSet rs = s.executeQuery();
+
+            while (i >= 0) {
+                rs.next();
+                i--;
+            }
+
+            int nif = rs.getInt("idnegociador");
+            Connect.close(c);
+            return new NegociadorDAO().get(nif);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Connect.close(c);
+        return null;
+    }
+
     @Override
     public Observer get(int i) {
         Connection c = Connect.connect();
@@ -219,8 +243,11 @@ public class CFDAtivoDAO implements List<Observer> {
             if (!resultSet.isBeforeFirst())
                 return null;
 
+            boolean moreRows;
             while(i >= 0) {
-                resultSet.next();
+                moreRows = resultSet.next();
+                if (!moreRows)
+                    return getNegociador(c,i);
                 i--;
             }
             int id = resultSet.getInt("id");
@@ -238,7 +265,11 @@ public class CFDAtivoDAO implements List<Observer> {
             boolean aberto = resultSet.getBoolean("aberto");
             boolean longCFD = resultSet.getBoolean("long");
 
-            Observer n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
+            Observer n;
+            if (longCFD)
+                n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
+            else
+                n = new Short(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
 
             resultSet.close();
 
