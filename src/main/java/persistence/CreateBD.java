@@ -49,6 +49,9 @@ public class CreateBD {
             s.executeUpdate("drop table if exists Negociador cascade;");
             s.executeUpdate("create table Negociador(Nif int primary key, Nome varchar, Email varchar, Password varchar, Saldo float);");
 
+            s.executeUpdate("drop table if exists NegociadorAtivo cascade;");
+            s.executeUpdate("create table NegociadorAtivo (IdNegociador int references Negociador(nif), IdAtivo varchar references Ativo(id), ValorOriginal float, primary key (IdNegociador, IdAtivo));");
+
             s.executeUpdate("drop table if exists CFD cascade;");
             s.executeUpdate("create table CFD (Id int primary key, Data timestamp, UnidadesDeAtivo float," +
                     "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, " +
