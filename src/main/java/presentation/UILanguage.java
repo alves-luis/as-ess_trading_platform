@@ -20,4 +20,5 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     String getInsertCFDtoEnd();
     String getCFDClosed();
     String getEuro();
+    String getChooseAtivoToFollow();
 }

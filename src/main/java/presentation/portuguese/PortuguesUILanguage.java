@@ -35,7 +35,7 @@ public class PortuguesUILanguage implements UILanguage {
 
     @Override
     public List<String> getInitialPageOptions() {
-        return new ArrayList<>(Arrays.asList("Estabelecer CFD", "Encerrar CFD", "Consultar CFDs", "Consultar Ativos", "Adicionar Saldo", "Logout"));
+        return new ArrayList<>(Arrays.asList("Estabelecer CFD", "Encerrar CFD", "Consultar CFDs", "Consultar Ativos", "Adicionar Saldo", "Subscrever Ativo", "Ativos Subscritos " ,"Logout"));
     }
 
     @Override
@@ -181,5 +181,12 @@ public class PortuguesUILanguage implements UILanguage {
     public String getEuro() {
         return "€";
     }
+
+    @Override
+    public String getChooseAtivoToFollow(){
+        return "Qual o número do ativo que pretende subscrever?";
+    }
+
+
 
 }

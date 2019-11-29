@@ -1,8 +1,7 @@
 package business;
 
-import persistence.CFDNegociadorDao;
+import persistence.CFDNegociadorDAO;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class Negociador {
     	this.email = email;
     	this.password = password;
     	this.saldo = saldo;
-    	this.cfds = new CFDNegociadorDao(nif);
+    	this.cfds = new CFDNegociadorDAO(nif);
     }
 
 	/**

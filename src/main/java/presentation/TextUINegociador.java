@@ -140,6 +140,10 @@ public class TextUINegociador implements UINegociador {
                     break;
             case 4: showAdicionarSaldo();
                     break;
+            case 5: showSubscreverAtivo();
+                break;
+            case 6: showAtivosSubscritos();
+                break;
             default: this.nif = null;
                     showMenuInicial();
                     break;
@@ -147,6 +151,30 @@ public class TextUINegociador implements UINegociador {
     }
 
 
+    private void showSubscreverAtivo(){
+        UILanguage lang = this.factory.getLang();
+        System.out.println(lang.getChooseAtivoToFollow());
+
+        //alterar
+
+        List<String> options = this.factory.getAssetsUILanguage().getTypesOfAssets();
+        System.out.print(listOptions(options)); // print types of assets
+        int typeOfAtivo = chooseOption(options.size(), options.size() - 1);
+        List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[typeOfAtivo]);
+
+        List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
+        System.out.println(lang.getInsertAssetToInvest());
+        System.out.print(listOptions(ativosAsString)); // print assets of given type
+
+        int escolha = getInt();
+        this.facade.seguirAtivo(this.nif,ativos.get(escolha).getId());
+
+        showPaginaInicial();
+    }
+
+    private void showAtivosSubscritos(){
+        showPaginaInicial();
+    }
 
     private void showAdicionarSaldo() {
         UILanguage lang = this.factory.getLang();
@@ -165,7 +193,7 @@ public class TextUINegociador implements UINegociador {
 
     }
 
-    private void showConsultarAtivos() {
+    private void showAllAtivos(){
         GetAssetsUILanguage lang = this.factory.getAssetsUILanguage();
         List<String> options = lang.getTypesOfAssets();
         System.out.println(lang.getInsertTypeofAsset());
@@ -173,6 +201,11 @@ public class TextUINegociador implements UINegociador {
         int tipo = chooseOption(options.size(), options.size() - 1);
         List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[tipo]);
         ativos.forEach(a -> System.out.println(a.toString())); // update to customize according to lang
+
+    }
+
+    private void showConsultarAtivos() {
+        showAllAtivos();
         showPaginaInicial();
     }
 
@@ -224,6 +257,7 @@ public class TextUINegociador implements UINegociador {
         }
         showPaginaInicial();
     }
+
 
     private void showEstabelecerCFD() {
         SetCFDUILanguage lang = this.factory.getSetCFDUILanguage();

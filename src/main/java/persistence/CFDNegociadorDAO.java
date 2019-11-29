@@ -7,10 +7,10 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class CFDNegociadorDao implements List<CFD>{
+public class CFDNegociadorDAO implements List<CFD>{
 	private Integer nifNegociador;
 
-	public CFDNegociadorDao(int nif) {
+	public CFDNegociadorDAO(int nif) {
 		this.nifNegociador = nif;
 	}
 
