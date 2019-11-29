@@ -16,31 +16,13 @@ public class Long extends CFD {
         super(id, data, unidadesDeCompra, valor, limiteMin, limiteMax, idAtivo, nifNegociador, aberto, valorPorUnidadeFinal);
     }
 
+    public double getGanhoDoFecho() {
+        if (this.isAberto()) // if CFD still open, no valorization
+            return 0;
+        return this.getValorPorUnidadeFinal() * this.getUnidadesDeAtivo();
+    }
 
-    /**
-     * @param valorAtivo valor do ativo associado a este CFD
-     * @return se deve continuar a ser atualizado
-     */
-    @Override
-    public boolean update(double valorAtivo) {
-        // se cfd fechado, retorna falso (nao atualizou)
-        if (!this.isAberto())
-            return false;
-
-        double valorDoCFD = this.getUnidadesDeAtivo() * valorAtivo;
-        Double takeprofit = this.getLimitSup();
-        Double stoploss = this.getLimiteInf();
-
-        boolean atualizou = false;
-        if (takeprofit != null && valorDoCFD >= takeprofit) {
-            this.fecharCFD(valorAtivo);
-            atualizou = true;
-        }
-        if (stoploss != null && valorDoCFD <= stoploss) {
-            this.fecharCFD(valorAtivo);
-            atualizou = true;
-        }
-
-        return atualizou;
+    public double getValorCFD(double valorAtivo) {
+        return this.getUnidadesDeAtivo() * valorAtivo;
     }
 }

@@ -103,20 +103,24 @@ public class CFDDao implements Map<Integer, CFD> {
             resultSet.next();
 
             int id = resultSet.getInt("id");
-            Timestamp date = resultSet.getTimestamp("data");
+            LocalDateTime data = resultSet.getTimestamp("data").toLocalDateTime();
             double uniAtivo = resultSet.getDouble("unidadesdeativo");
             double valorUnidadeCompra = resultSet.getDouble("valorporunidadenacompra");
-            double limiteS = resultSet.getDouble("limiteSup");
-            double limiteI = resultSet.getDouble("limiteInf");
+            Double limiteS = resultSet.getDouble("limiteSup");
+            if (resultSet.wasNull())
+                limiteS = null;
+            Double limiteI = resultSet.getDouble("limiteInf");
+            if (resultSet.wasNull())
+                limiteI = null;
             boolean aberto = resultSet.getBoolean("aberto");
             int nifNeg = resultSet.getInt("nifNegociador");
             String idAtivo = resultSet.getString("idAtivo");
-            LocalDateTime data = date.toLocalDateTime();
+            boolean isLong = resultSet.getBoolean("long");
 
             CFD cfd;
             if (!aberto) {
                 double valorUnidFim = resultSet.getDouble("valorporunidadenofim");
-                cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto, valorUnidadeCompra);
+                cfd = new Long(id, data, uniAtivo, valorUnidadeCompra, limiteI, limiteS, idAtivo, nifNeg, aberto, valorUnidFim);
 
             }
             else {
@@ -153,10 +157,10 @@ public class CFDDao implements Map<Integer, CFD> {
         PreparedStatement s = null;
         try{
             if(this.containsKey(integer)){
-                s = c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = ?, valorporunidadenofim = ? where id = " + cfd.getId());
+                s = c.prepareStatement("update cfd set id = ?, data = ?, unidadesdeativo = ?, valorporunidadenacompra = ?, limiteInf = ?, limiteSup = ?, idAtivo = ? ,nifnegociador = ?,  aberto = ?, valorporunidadenofim = ?, long = ? where id = " + cfd.getId());
             }
             else
-                s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                s = c.prepareStatement("insert into cfd values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             s.setInt(1,cfd.getId());
             s.setTimestamp(2,Timestamp.valueOf(cfd.getData()));
@@ -174,6 +178,8 @@ public class CFDDao implements Map<Integer, CFD> {
             s.setInt(8,cfd.getNifNegociador());
             s.setBoolean(9,cfd.isAberto());
             s.setDouble(10,cfd.getValorPorUnidadeFinal());
+            boolean isLong = cfd instanceof Long;
+            s.setBoolean(11, isLong);
 
             int update = s.executeUpdate();
 

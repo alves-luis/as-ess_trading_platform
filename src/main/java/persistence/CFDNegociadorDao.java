@@ -137,6 +137,7 @@ public class CFDNegociadorDao implements List<CFD>{
 			String idAtivo = resultSet.getString("idativo");
 			int nif = resultSet.getInt("nifnegociador");
 			boolean aberto = resultSet.getBoolean("aberto");
+			boolean isLong = resultSet.getBoolean("long");
 
 			CFD n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
 

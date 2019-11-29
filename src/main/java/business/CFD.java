@@ -105,6 +105,17 @@ public abstract class CFD implements Observer {
 		return false;
 	}
 
+	/**
+	 * @return quanto deve ser atribuído ao saldo do negociador, caso termine o CFD
+	 */
+	public abstract double getGanhoDoFecho();
+
+	/**
+	 * @param valorAtivo base para gerar valorização de CFD
+	 * @return valor de um CFD para um dado valor de ativo
+	 */
+	public abstract double getValorCFD(double valorAtivo);
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Id: ").append(this.id).append("\n");
@@ -123,5 +134,28 @@ public abstract class CFD implements Observer {
 
 	public void setId(int id){
 		this.id=id;
+	}
+
+	public boolean update(double valorAtivo) {
+		// se cfd fechado, retorna falso (nao atualizou)
+		if (!this.isAberto())
+			return false;
+
+		double valorDoCFD = this.getValorCFD(valorAtivo); // template method
+		Double takeprofit = this.getLimitSup();
+		Double stoploss = this.getLimiteInf();
+
+		boolean atualizou = false;
+		if (takeprofit != null && valorDoCFD >= takeprofit) {
+			this.fecharCFD(valorAtivo);
+			atualizou = true;
+		}
+		if (stoploss != null && valorDoCFD <= stoploss) {
+			this.fecharCFD(valorAtivo);
+			atualizou = true;
+		}
+
+		return atualizou;
+
 	}
 }

@@ -413,8 +413,6 @@ public class AtivoDAO implements Map<String,Ativo>{
 		if (!s.equals(ativo.getId()))
 			return null;
 
-		Ativo res = null;
-
 		PreparedStatement st;
 		try {
 
@@ -425,6 +423,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 				st.setString(1,ativo.getId());
 				st.setString(2,ativo.getNome());
 				st.setDouble(3,ativo.getValorPorUnidade());
+
 			}
 			else {
 				st = c.prepareStatement("insert into ativo values (?, ?, ?);");
@@ -433,24 +432,9 @@ public class AtivoDAO implements Map<String,Ativo>{
 				st.setString(1, ativo.getId());
 				st.setString(2, ativo.getNome());
 				st.setDouble(3, ativo.getValorPorUnidade());
-
-				int updated = st.executeUpdate();
-
-				if (updated == 0)
-					return null;
-
-				if (ativo instanceof Acao)
-					ativo = putAcao(c, ativo);
-
-				if (ativo instanceof Moeda)
-					ativo = putMoeda(c, ativo);
-
-				if (ativo instanceof Indice)
-					ativo = putIndice(c, ativo);
-
-				if (ativo instanceof Commodity)
-					ativo = putCommodity(c, ativo);
 			}
+
+			st.executeUpdate();
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

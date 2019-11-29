@@ -53,7 +53,7 @@ public class CreateBD {
             s.executeUpdate("create table CFD (Id int primary key, Data timestamp, UnidadesDeAtivo float," +
                     "ValorPorUnidadeNaCompra float, LimiteSup float, LimiteInf float, " +
                     "IdAtivo varchar references ativo(id) on delete cascade, NifNegociador int references Negociador(nif)" +
-                    ", Aberto boolean, ValorPorUnidadeNoFim float);");
+                    ", Aberto boolean, ValorPorUnidadeNoFim float, long boolean);");
 
         } catch (SQLException e) {
             e.printStackTrace();

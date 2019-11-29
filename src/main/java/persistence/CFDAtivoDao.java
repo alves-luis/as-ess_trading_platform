@@ -172,10 +172,15 @@ public class CFDAtivoDao implements List<Observer> {
             double udativo = resultSet.getDouble("unidadesdeativo");
             double vpuc = resultSet.getDouble("valorporunidadenacompra");
             Double limitesup = resultSet.getDouble("limitesup");
+            if (resultSet.wasNull())
+                limitesup = null;
             Double limiteinf = resultSet.getDouble("limiteinf");
+            if (resultSet.wasNull())
+                limiteinf = null;
             String idAtivo = this.idAtivo;
             int nif = resultSet.getInt("nifnegociador");
             boolean aberto = resultSet.getBoolean("aberto");
+            boolean longCFD = resultSet.getBoolean("long");
 
             Observer n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
 
