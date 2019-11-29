@@ -56,7 +56,7 @@ public class CFDDAO implements Map<Integer, CFD> {
 
         Integer key= (Integer) o;
 
-        PreparedStatement s = null;
+        PreparedStatement s;
         boolean result= false;
 
         try {

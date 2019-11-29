@@ -1,17 +1,24 @@
 package business;
 
+
 import persistence.CFDNegociadorDAO;
+import business.ativos.Ativo;
+import persistence.NegociadorAtivoDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class Negociador {
+public class Negociador implements Observer {
+	private static final double TRIGGER_UPDATE_ATIVO = 0.2;
+
 	private int nif;
 	private String nome;
 	private String email;
 	private String password;
 	private double saldo;
 	private List<CFD> cfds;
+	private Map<String, Ativo> ativos;
 
     public Negociador(int nif, String nome, String email, String password, double saldo) {
     	this.nif = nif;
@@ -20,6 +27,7 @@ public class Negociador {
     	this.password = password;
     	this.saldo = saldo;
     	this.cfds = new CFDNegociadorDAO(nif);
+    	this.ativos = new NegociadorAtivoDAO(nif);
     }
 
 	/**
@@ -52,24 +60,12 @@ public class Negociador {
 		return this.nome;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getEmail() {
 		return this.email;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getPassword() {
     	return this.password;
-	}
-
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
 	}
 
 	public double getSaldo() {
@@ -109,7 +105,24 @@ public class Negociador {
     	return result;
 	}
 
-	public boolean isSeguindoAtivo(String id) {
-		return true; // TODO
+	public boolean isSeguindoAtivo(String idAtivo) {
+		return this.ativos.containsKey(idAtivo);
+	}
+
+	public void seguirAtivo(Ativo a) {
+		this.ativos.put(a.getId(), a);
+	}
+
+	@Override
+	public boolean update(double valorAtivo, String idAtivo) {
+		Ativo a = this.ativos.get(idAtivo);
+		double dif = Math.abs(a.getValorPorUnidade() - valorAtivo) / a.getValorPorUnidade();
+		if (dif > TRIGGER_UPDATE_ATIVO) {
+			this.ativos.remove(idAtivo);
+			System.out.println("Ativo variou mais de " + TRIGGER_UPDATE_ATIVO + "%! Valia " + a.getValorPorUnidade() + "€" +
+					" e agora vale " + valorAtivo + "€!");
+			return true;
+		}
+		return false;
 	}
 }

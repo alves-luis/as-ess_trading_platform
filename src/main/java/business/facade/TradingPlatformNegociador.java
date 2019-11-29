@@ -199,8 +199,13 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		return c.getValorCFD(a.getValorPorUnidade());
 	}
 
-	@Override
+	/**
+	 * @param nif Negociador
+	 * @param idAtivo id do ativo que pretende seguir
+	 */
 	public void seguirAtivo(int nif, String idAtivo) {
-
+		Negociador n = this.negociadores.get(nif);
+		Ativo a = this.ativos.get(idAtivo);
+		n.seguirAtivo(a);
 	}
 }

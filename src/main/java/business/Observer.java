@@ -2,5 +2,5 @@ package business;
 
 public interface Observer {
 
-	boolean update(double valorAtivo); // return true se atualizou
+	boolean update(double valorAtivo, String idAtivo); // return true se atualizou
 }

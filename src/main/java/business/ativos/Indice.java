@@ -12,10 +12,6 @@ public class Indice extends Ativo {
 		this.numEmpresas = numEmpresas;
 	}
 
-	public void setNumEmpresas(int numEmpresas) {
-		this.numEmpresas = numEmpresas;
-	}
-
 	public int getNumEmpresas() {
 		return this.numEmpresas;
 	}

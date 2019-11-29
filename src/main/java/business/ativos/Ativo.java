@@ -76,7 +76,7 @@ public abstract class Ativo implements Runnable, Observable {
 		List<Observer> updatedObservers = new ArrayList<>();
 		for (int i = 0; i < observers.size(); i++) {
 			Observer o = observers.get(i);
-			if (o.update(this.valorPorUnidade))
+			if (o.update(this.valorPorUnidade, this.getId()))
 				updatedObservers.add(o);
 		}
 		this.setObservers(updatedObservers);
