@@ -1,6 +1,7 @@
 package business.ativos;
 
 public class Indice extends Ativo {
+
 	private int numEmpresas;
 
 	public Indice(String id, String nome, double vpu) {

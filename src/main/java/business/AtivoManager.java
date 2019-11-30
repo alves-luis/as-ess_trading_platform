@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AtivoManager implements Runnable {
+
     private Map<String, Ativo> ativosPorId;
     private Map<String, List<Ativo>> ativosPorTipo;
 
