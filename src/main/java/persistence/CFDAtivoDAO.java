@@ -240,8 +240,6 @@ public class CFDAtivoDAO implements List<Observer> {
             s.setString(1,this.idAtivo);
 
             ResultSet resultSet = s.executeQuery();
-            if (!resultSet.isBeforeFirst())
-                return null;
 
             boolean moreRows;
             while(i >= 0) {
