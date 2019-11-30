@@ -6,6 +6,7 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     List<String> getInitialMenuOptions();
     String getGoodbyeMessage();
     // Menu Login
+    String getInicialPage();
     String getInsertYourNif();
     String getInsertYourPassword();
     String getNonExistentCredentials();
@@ -22,4 +23,6 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     String getEuro();
     String getChooseAtivoToFollow();
     String getNoSubscriber();
+    String getSubscribedAtivos();
+    String getValueOfLimits();
 }

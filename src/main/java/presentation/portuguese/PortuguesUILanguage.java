@@ -192,5 +192,20 @@ public class PortuguesUILanguage implements UILanguage {
         return "Não subscreveu nenhum ativo!";
     }
 
+    @Override
+    public String getSubscribedAtivos(){
+        return "Os ativos subscritos são:";
+    }
+
+    @Override
+    public String getInicialPage(){
+        return "   Página inicial";
+    }
+
+    @Override
+    public String getValueOfLimits(){
+        return "O valor escolhido está fora do limite! Insira um valor novamente!";
+    }
+
 
 }

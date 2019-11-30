@@ -126,7 +126,9 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showPaginaInicial() {
+        UILanguage lang = this.factory.getLang();
         List<String> options = this.factory.getLang().getInitialPageOptions();
+        System.out.println(lang.getInicialPage());
         System.out.print(listOptions(options));
         int choice = chooseOption(4, options.size() - 1);
         switch (choice) {
@@ -160,13 +162,16 @@ public class TextUINegociador implements UINegociador {
         List<String> options = this.factory.getAssetsUILanguage().getTypesOfAssets();
         System.out.print(listOptions(options)); // print types of assets
         int typeOfAtivo = chooseOption(options.size(), options.size() - 1);
+
         List<Ativo> ativos = this.facade.getAtivos(AtivoConsts.ALL_ATIVOS[typeOfAtivo]);
 
         List<String> ativosAsString = ativos.stream().map(Ativo::toString).collect(Collectors.toList());
         System.out.println(lang.getInsertAssetToInvest());
         System.out.print(listOptions(ativosAsString)); // print assets of given type
 
-        int escolha = getInt();
+        int escolha = chooseOption(ativosAsString.size(), ativosAsString.size() - 1);
+
+
         this.facade.seguirAtivo(this.nif,ativos.get(escolha).getId());
 
         showPaginaInicial();
@@ -175,9 +180,11 @@ public class TextUINegociador implements UINegociador {
     private void showAtivosSubscritos(){
         UILanguage lang = this.factory.getLang();
         List<Ativo> ativos = this.facade.getAtivosSubscritos(this.nif);
+
         if (ativos != null){
-            String delimiter = "-".repeat(40);
-            ativos.forEach((ativo) -> { System.out.println(delimiter);System.out.println(ativo.toString());});
+            System.out.println(lang.getSubscribedAtivos());
+            String delimiter = "*".repeat(40) + "\n";
+            ativos.forEach((ativo) -> { System.out.println(delimiter + ativo.toString() + "\n" + delimiter);});
         }
         else
             System.out.println(lang.getNoSubscriber());
