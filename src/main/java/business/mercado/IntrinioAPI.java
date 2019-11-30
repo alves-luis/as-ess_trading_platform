@@ -35,8 +35,7 @@ public class IntrinioAPI implements Mercado {
 				ApiResponseStockExchangeSecurities r = stockExchangeApi.getStockExchangeSecurities(identifier, pageSize, nextPage);
 				r.getSecurities().forEach(s -> result.add(s.getId()));
 			} catch (ApiException e) {
-				System.err.println("Exception when calling StockExchangeApi#getStockExchangeSecurities");
-				e.printStackTrace();
+				System.err.println("Could not retrieve Acoes. Defaulting to empty List!");
 			}
 		}
 
@@ -55,9 +54,7 @@ public class IntrinioAPI implements Mercado {
 			Security s = securityApi.getSecurityById(identifier);
 			result = s.getName();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling SecurityApi#getSecurityById");
-			System.err.println("Could not get name of " + identifier);
-			e.printStackTrace();
+			System.err.println("Could not get name of " + identifier + ". Defaulting to empty name!");
 		}
 
 		return result;
@@ -75,9 +72,7 @@ public class IntrinioAPI implements Mercado {
 			Security s = securityApi.getSecurityById(identifier);
 			result = s.getName();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling SecurityApi#getSecurityById");
-			System.err.println("Could not get the name of the company of " + identifier);
-			e.printStackTrace();
+			System.err.println("Could not get the name of the company of " + identifier + ". Defaulting to empty name!");
 		}
 
 		return result;
@@ -104,9 +99,7 @@ public class IntrinioAPI implements Mercado {
 				close = result.getStockPrices().get(0).getClose();
 			return close.doubleValue();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling SecurityApi#getSecurityStockPrices");
-			System.err.println("Could not get quote for " + identifier);
-			e.printStackTrace();
+			System.err.println("Could not get quote for " + identifier + ". Defaulting to 0");
 		}
 		return 0;
 	}
@@ -128,8 +121,7 @@ public class IntrinioAPI implements Mercado {
 				return ThreadLocalRandom.current().nextDouble(10, 250);
 			return result.doubleValue();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getSicIndexDataPointNumber");
-			e.printStackTrace();
+			System.err.println("Could not get quote for " + identifier + ". Defaulting to 0");
 		}
 		return 0;
 	}
@@ -149,8 +141,7 @@ public class IntrinioAPI implements Mercado {
 			ApiResponseSICIndices r = indexApi.getAllSicIndices(pageSize, nextPage);
 			r.getIndices().forEach(i -> result.add(i.getId()));
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getAllSicIndices");
-			e.printStackTrace();
+			System.err.println("Could not get Commodities. Defaulting to empty List");
 		}
 
 		return result;
@@ -167,8 +158,7 @@ public class IntrinioAPI implements Mercado {
 			SICIndex result = indexApi.getSicIndexById(identifier);
 			return result.getName();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getSicIndexById");
-			e.printStackTrace();
+			System.err.println("Could not get name for " + identifier + ". Defaulting to empty name");
 		}
 
 		return "";
@@ -185,8 +175,7 @@ public class IntrinioAPI implements Mercado {
 			SICIndex result = indexApi.getSicIndexById(identifier);
 			return result.getCountry();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getSicIndexById");
-			e.printStackTrace();
+			System.err.println("Could not get pais for " + identifier + ". Defaulting to empty name");
 		}
 
 		return "";
@@ -206,8 +195,7 @@ public class IntrinioAPI implements Mercado {
 			BigDecimal result = indexApi.getStockMarketIndexDataPointNumber(identifier, tag);
 			return result.doubleValue();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getStockMarketIndexDataPointNumber");
-			e.printStackTrace();
+			System.err.println("Could not get quote for " + identifier + ". Defaulting to 0");
 		}
 		return 0;
 	}
@@ -227,8 +215,7 @@ public class IntrinioAPI implements Mercado {
 			ApiResponseStockMarketIndices r = indexApi.getAllStockMarketIndices(pageSize, nextPage);
 			r.getIndices().forEach(i -> result.add(i.getId()));
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getAllStockMarketIndices");
-			e.printStackTrace();
+			System.err.println("Could not get indices. Defaulting to empty list");
 		}
 		return result;
 	}
@@ -245,8 +232,7 @@ public class IntrinioAPI implements Mercado {
 			StockMarketIndex r = indexApi.getStockMarketIndexById(identifier);
 			return r.getName();
 		} catch (ApiException e) {
-			System.err.println("Exception when calling IndexApi#getStockMarketIndexById");
-			e.printStackTrace();
+			System.err.println("Could not get name for " + identifier + ". Defaulting to empty name");
 		}
 
 		return result;
@@ -281,8 +267,7 @@ public class IntrinioAPI implements Mercado {
 			}
 			return value;
 		} catch (ApiException e) {
-			System.err.println("Exception when calling ForexApi#getForexPrices");
-			e.printStackTrace();
+			System.err.println("Could not get quote for " + identifier + ". Defaulting to 0");
 		}
 		return 0;
 	}
@@ -301,8 +286,7 @@ public class IntrinioAPI implements Mercado {
 			ApiResponseForexPairs r = forexApi.getForexPairs();
 			r.getPairs().forEach(c -> result.add(c.getCode()));
 		} catch (ApiException e) {
-			System.err.println("Exception when calling ForexApi#getForexPairs");
-			e.printStackTrace();
+			System.err.println("Could not get moedas. Defaulting to empty list");
 		}
 		return result;
 	}
