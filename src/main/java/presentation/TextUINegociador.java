@@ -244,7 +244,7 @@ public class TextUINegociador implements UINegociador {
                     lang.getInvestedValue() + " | " + cfd.getValorInvestido() + "€",
                     lang.getInvestedValueInCaseOfRefund() + " | " + en.getValue() + "€",
                     lang.getTipoCFD() + " | " + cfd.getTipo()));
-            String delimiter = "-".repeat(format.get(format.size()-1).length());
+            String delimiter = "*".repeat(format.get(format.size()-1).length());
             System.out.println(delimiter);
             format.forEach(System.out::println);
             System.out.println(delimiter);
@@ -264,8 +264,11 @@ public class TextUINegociador implements UINegociador {
         try {
             double valorCFD = this.facade.fecharCFD(id);
             double valorFinal = this.facade.getSaldo(this.nif);
+            String delimiter = "*".repeat(60);
+            System.out.println(delimiter);
             System.out.println(lang.getCFDClosed() + valorCFD + lang.getEuro());
             System.out.println(lang.getSaldo() + valorFinal + lang.getEuro());
+            System.out.println(delimiter);
         }
         catch (CFDNaoExisteException e){
             System.out.println(e.toString());
