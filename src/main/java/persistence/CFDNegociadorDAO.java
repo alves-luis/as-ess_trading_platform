@@ -2,6 +2,7 @@ package persistence;
 
 import business.CFD;
 import business.Long;
+import business.Short;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -139,7 +140,11 @@ public class CFDNegociadorDAO implements List<CFD>{
 			boolean aberto = resultSet.getBoolean("aberto");
 			boolean isLong = resultSet.getBoolean("long");
 
-			CFD n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
+			CFD n;
+			if (isLong)
+				n = new Long(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
+			else
+				n = new Short(id, data, udativo, vpuc, limiteinf, limitesup, idAtivo, nif, aberto);
 
 			resultSet.close();
 
