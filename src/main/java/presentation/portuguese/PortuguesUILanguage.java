@@ -187,6 +187,10 @@ public class PortuguesUILanguage implements UILanguage {
         return "Qual o número do ativo que pretende subscrever?";
     }
 
+    @Override
+    public String getNoSubscriber(){
+        return "Não subscreveu nenhum ativo!";
+    }
 
 
 }

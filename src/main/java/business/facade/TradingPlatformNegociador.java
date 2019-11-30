@@ -208,4 +208,13 @@ public class TradingPlatformNegociador implements FacadeNegociador {
 		Ativo a = this.ativos.get(idAtivo);
 		n.seguirAtivo(a);
 	}
+
+
+	public List<Ativo> getAtivosSubscritos(int nif){
+		Negociador n= this.negociadores.get(nif);
+		List<Ativo> ativos = n.getAtivos();
+		return ativos;
+
+	}
+
 }

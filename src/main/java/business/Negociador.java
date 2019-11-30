@@ -6,6 +6,7 @@ import business.ativos.Ativo;
 import persistence.NegociadorAtivoDAO;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +112,11 @@ public class Negociador implements Observer {
 
 	public void seguirAtivo(Ativo a) {
 		this.ativos.put(a.getId(), a);
+	}
+
+	public List<Ativo> getAtivos(){
+
+		return (List<Ativo>) ativos.values();
 	}
 
 	@Override

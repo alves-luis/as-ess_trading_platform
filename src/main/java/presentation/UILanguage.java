@@ -21,4 +21,5 @@ public interface UILanguage extends SetCFDUILanguage, GetCFDsUILanguage, GetAsse
     String getCFDClosed();
     String getEuro();
     String getChooseAtivoToFollow();
+    String getNoSubscriber();
 }

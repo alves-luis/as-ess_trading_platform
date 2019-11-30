@@ -6,6 +6,7 @@ import business.exceptions.CFDNaoExisteException;
 import business.exceptions.NegociadorNaoExisteException;
 import business.exceptions.NegociadorNaoPossuiSaldoSuficienteException;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface FacadeNegociador {
@@ -36,4 +37,6 @@ public interface FacadeNegociador {
     double getValorAtualCFD(int idCFD);
 
     void seguirAtivo(int nif, String idAtivo);
+
+    List<Ativo> getAtivosSubscritos(int nif);
 }

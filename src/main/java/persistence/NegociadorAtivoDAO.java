@@ -183,8 +183,42 @@ public class NegociadorAtivoDAO implements Map<String, Ativo> {
 
     @Override
     public Collection<Ativo> values() {
-        return null;
+        Connection c = Connect.connect();
+        if (c == null){
+            System.out.println("Can't connect");
+            return null;
+        }
+
+        Statement s;
+        Collection<Ativo> ativos = new ArrayList<>();
+
+        try {
+            s = c.createStatement();
+            ResultSet rs = s.executeQuery("select * from negociadorativo where idnegociador = " + nifNegociador + ";");
+
+            if (!rs.isBeforeFirst())
+                return null;
+
+            rs.next();
+            while(!rs.isAfterLast()) {
+                String idAt = rs.getString("idativo");
+                double valor = rs.getDouble("valororiginal");
+
+                Ativo a = new AtivoDAO().get(idAt); // reuse code :P
+                a.setValorPorUnidade(valor);
+                ativos.add(a);
+
+                rs.next();
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Connect.close(c);
+        return ativos;
     }
+
 
     @Override
     public Set<Entry<String, Ativo>> entrySet() {

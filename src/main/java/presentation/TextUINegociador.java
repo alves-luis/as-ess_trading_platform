@@ -173,6 +173,14 @@ public class TextUINegociador implements UINegociador {
     }
 
     private void showAtivosSubscritos(){
+        UILanguage lang = this.factory.getLang();
+        List<Ativo> ativos = this.facade.getAtivosSubscritos(this.nif);
+        if (ativos != null){
+            String delimiter = "-".repeat(40);
+            ativos.forEach((ativo) -> { System.out.println(delimiter);System.out.println(ativo.toString());});
+        }
+        else
+            System.out.println(lang.getNoSubscriber());
         showPaginaInicial();
     }
 
