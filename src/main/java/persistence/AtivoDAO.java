@@ -79,152 +79,6 @@ public class AtivoDAO implements Map<String,Ativo>{
 		return false;
 	}
 
-	private int sizeAtivoPorTipo(Connection c, String tipo) {
-
-		Statement s;
-		int result = 0;
-
-		try {
-
-			s = c.createStatement();
-
-			ResultSet resultSet = s.executeQuery("select count(*) from " + tipo+";");
-			resultSet.next();
-			result = resultSet.getInt(1);
-			resultSet.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-
-	private String getClassAtivo( Connection c, String id){
-
-		PreparedStatement s;
-		String[] ativos = {"acao","indice","moeda","commodity"};
-
-		try {
-			for(int i = 0; i < ativos.length; i++) {
-				s = c.prepareStatement("select * from " + ativos[i] +"ativo"+ " where idAtivo = ?;");
-				s.setString(1,id);
-
-				ResultSet resultSet = s.executeQuery();
-				if(resultSet.isBeforeFirst())  {
-					resultSet.close();
-					return ativos[i];
-				}
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-
-	private Acao getAcao(Connection c, String id, String nome, double valorPorUnidade){
-
-	    PreparedStatement s;
-
-	    try {
-            s = c.prepareStatement("select * from acaoativo inner join acao ON acao.id = acaoativo.idacao where acaoativo.idativo = ?");
-            s.setString(1,id);
-
-            ResultSet resultSet = s.executeQuery();
-
-            if (!resultSet.isBeforeFirst())
-                return null;
-
-            resultSet.next();
-            String empresa = resultSet.getString("empresa");
-
-            return (new Acao(id,nome,valorPorUnidade,empresa));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-	    return null;
-    }
-
-    private Moeda getMoeda(Connection c, String id, String nome, double valorPorUnidade){
-
-        PreparedStatement s;
-
-        try {
-            s = c.prepareStatement("select * from moedaativo inner join moeda ON moeda.id = moedaativo.idmoeda where moedaativo.idativo = ?");
-            s.setString(1,id);
-
-            ResultSet resultSet = s.executeQuery();
-
-            if (!resultSet.isBeforeFirst())
-                return null;
-
-            resultSet.next();
-            String moedaA = resultSet.getString("moedaa");
-            String moedaB = resultSet.getString("moedab");
-
-            return (new Moeda(id,nome,valorPorUnidade,moedaA,moedaB));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    private Indice getIndice(Connection c, String id, String nome, double valorPorUnidade){
-
-        PreparedStatement s;
-
-        try {
-            s = c.prepareStatement("select * from indiceativo inner join indice ON indice.id = indiceativo.idindice where indiceativo.idativo = ?");
-            s.setString(1,id);
-
-            ResultSet resultSet = s.executeQuery();
-
-            if (!resultSet.isBeforeFirst())
-                return null;
-
-            resultSet.next();
-            int num_empresas = resultSet.getInt("numempresas");
-
-            return (new Indice(id,nome,valorPorUnidade,num_empresas));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    private Commodity getCommodity(Connection c, String id, String nome, double valorPorUnidade){
-
-        PreparedStatement s;
-
-        try {
-            s = c.prepareStatement("select * from commodityativo inner join commodity ON commodity.id = commodityativo.idcommodity where commodityativo.idativo = ?");
-            s.setString(1,id);
-
-            ResultSet resultSet = s.executeQuery();
-
-            if (!resultSet.isBeforeFirst())
-                return null;
-
-            resultSet.next();
-            String pais = resultSet.getString("pais");
-
-            return (new Commodity(id,nome,valorPorUnidade,pais));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
 	@Override
 	public Ativo get(Object o) {
@@ -257,20 +111,20 @@ public class AtivoDAO implements Map<String,Ativo>{
 			double valorPorUnidade = resultSet.getDouble("valorporunidade");
 
 
-			String classeAtivo = getClassAtivo(c,key);
+			String classeAtivo = DAOHelper.getClassAtivo(c,key);
 
 			if (classeAtivo.equals("acao")) {
-                return getAcao(c,id, nome, valorPorUnidade);
+                return DAOHelper.getAcao(c,id, nome, valorPorUnidade);
             }
 
 			else if (classeAtivo.equals("moeda"))
-                ativo = getMoeda(c,id, nome, valorPorUnidade);
+                ativo = DAOHelper.getMoeda(c,id, nome, valorPorUnidade);
 
 			else if (classeAtivo.equals("indice"))
-                ativo = getIndice(c,id, nome, valorPorUnidade);
+                ativo = DAOHelper.getIndice(c,id, nome, valorPorUnidade);
 
 			else if (classeAtivo.equals("commodity"))
-                ativo = getCommodity(c,id, nome, valorPorUnidade);
+                ativo = DAOHelper.getCommodity(c,id, nome, valorPorUnidade);
 
 			resultSet.close();
 
@@ -284,120 +138,7 @@ public class AtivoDAO implements Map<String,Ativo>{
 		return ativo;
 	}
 
-	private Ativo putAcao(Connection c, Ativo ativo){
 
-		PreparedStatement s;
-
-		try {
-			int res;
-			int id = sizeAtivoPorTipo(c,"acao");
-
-			s = c.prepareStatement("insert into acao values (?,?);");
-			s.setInt(1, id);
-			s.setString(2, ((Acao) ativo).getEmpresa());
-			s.executeUpdate();
-
-
-			s = c.prepareStatement("insert into acaoativo values (?,?);");
-			s.setInt(1, id);
-			s.setString(2, ativo.getId());
-			res = s.executeUpdate();
-
-			if (res == 1)
-				return ativo;
-
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private Ativo putMoeda(Connection c, Ativo ativo){
-
-		PreparedStatement s;
-
-		try {
-			int res;
-			int id = sizeAtivoPorTipo(c,"moeda");
-
-			s = c.prepareStatement("insert into moeda values (?,?,?);");
-			s.setInt(1, id);
-			s.setString(2, ((Moeda) ativo).getMoedaA());
-			s.setString(3, ((Moeda) ativo).getMoedaB());
-			s.executeUpdate();
-
-			s = c.prepareStatement("insert into moedaativo values (?,?);");
-			s.setInt(1, id);
-			s.setString(2, ativo.getId());
-			res = s.executeUpdate();
-
-			if (res ==1){
-				return ativo;
-			}
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-
-	private Ativo putIndice(Connection c, Ativo ativo){
-
-		PreparedStatement s;
-
-		try{
-			int res;
-			int id = sizeAtivoPorTipo(c,"indice");
-
-			s = c.prepareStatement("insert into indice values (?,?);");
-			s.setInt(1, id);
-			s.setInt(2, ((Indice) ativo).getNumEmpresas());
-			s.executeUpdate();
-
-			s = c.prepareStatement("insert into indiceativo values (?,?);");
-			s.setInt(1, id);
-			s.setString(2, ativo.getId());
-			res = s.executeUpdate();
-
-			if (res ==1){
-				return ativo;
-			}
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-    private Ativo putCommodity(Connection c, Ativo ativo){
-
-        PreparedStatement s;
-
-        try{
-            int res;
-            int id = sizeAtivoPorTipo(c,"commodity");
-
-            s = c.prepareStatement("insert into commodity values (?,?);");
-            s.setInt(1, id);
-            s.setString(2, ((Commodity) ativo).getPais());
-            s.executeUpdate();
-
-            s = c.prepareStatement("insert into commodityativo values (?,?);");
-            s.setInt(1, id);
-            s.setString(2, ativo.getId());
-            res = s.executeUpdate();
-
-            if (res ==1){
-                return ativo;
-            }
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 	@Override
@@ -437,16 +178,16 @@ public class AtivoDAO implements Map<String,Ativo>{
 				st.executeUpdate();
 
 				if (ativo instanceof Acao)
-					ativo = putAcao(c, ativo);
+					ativo = DAOHelper.putAcao(c, ativo);
 
 				if (ativo instanceof Moeda)
-					ativo = putMoeda(c, ativo);
+					ativo = DAOHelper.putMoeda(c, ativo);
 
 				if (ativo instanceof Indice)
-					ativo = putIndice(c, ativo);
+					ativo = DAOHelper.putIndice(c, ativo);
 
 				if (ativo instanceof Commodity)
-					ativo = putCommodity(c, ativo);
+					ativo = DAOHelper.putCommodity(c, ativo);
 			}
 		}
 		catch (SQLException e) {
