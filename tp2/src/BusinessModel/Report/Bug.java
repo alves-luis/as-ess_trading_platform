@@ -16,9 +16,6 @@ public class Bug {
 		this.date = date;
 	}
 
-	public Bug() {
-	}
-
 	public String getError() {
 		return error;
 	}

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BackgroundWorker implements Subscriber, Runnable {
+    private static double SIGNIFICANT_VAR = 0.05;
     private Map<String, Observer> assets;
     private List<Pair<String, Double>> names;
     private UserFacade userFacade;
@@ -46,17 +47,26 @@ public class BackgroundWorker implements Subscriber, Runnable {
 
     }
 
+    private boolean isSignificantVariation(double variation) {
+      return variation > (1 + SIGNIFICANT_VAR) && userFacade != null;
+    }
+
+    private boolean isLessSignificantVariation(double variation) {
+      return variation > SIGNIFICANT_VAR && userFacade != null;
+    }
+
     @Override
     public void notifyObservers() {
         for (Pair name: names) {
             Asset a = (Asset) assets.get(name.getKey());
-            if(a.getValue()/ (Double) name.getValue() > 1.05 && userFacade != null){
-                userFacade.update(a.getId(), (a.getValue()/ (Double) name.getValue() -1)*100 );
-            } else if(a.getValue()/ (Double) name.getValue() > 0.05 && userFacade != null){
-                userFacade.update(a.getId(), (a.getValue()/ (Double) name.getValue())*100 );
+            double variation = a.getValue()/ (Double) name.getValue();
+            if (isSignificantVariation(variation)){
+                userFacade.update(a.getId(), (variation - 1) * 100);
+            }
+            else if(isLessSignificantVariation(variation)) {
+                userFacade.update(a.getId(), variation * 100);
             }
             a.update(a.getId(), (Double) name.getValue());
-
         }
     }
 

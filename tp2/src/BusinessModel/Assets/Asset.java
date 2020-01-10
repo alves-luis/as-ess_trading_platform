@@ -5,7 +5,6 @@ import Services.Observer;
 
 public class Asset implements Observer {
 
-
 	private int id;
 	private Double value;
 	private String company;

@@ -91,7 +91,7 @@ public class ESSTrading {
 		if( u instanceof Investor)
 		{
 			Investor investor = (Investor) u;
-			List<Integer> cfdIdsList = investor.getPortfolio().getCFDs();
+			List<Integer> cfdIdsList = investor.getAllCFDids();
 			for(int i : cfdIdsList)
 			{
 				if(cfds.get(i) != null)
@@ -140,7 +140,7 @@ public class ESSTrading {
 		if(u instanceof Investor)
 		{
 			Investor investor = (Investor) u;
-			ids = investor.getPortfolio().getCFDs();
+			ids = investor.getAllCFDids();
 			if(ids.size() > 0)
 			{
 				for(Integer i : ids)

@@ -4,6 +4,7 @@ import Data.PortfolioDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class Portfolio {
 
@@ -30,12 +31,7 @@ public class Portfolio {
 	}
 
 	public void removeCFD(int id){
-		for (Integer i: CFDs) {
-			if(i == id){
-				CFDs.remove((Integer) id);
-				break;
-			}
-		}
+    CFDs.removeAll(Collections.singleton(id));
 	}
 
 	public List<Integer> getCFDs() {
