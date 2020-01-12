@@ -2,7 +2,6 @@ package BusinessModel.User;
 
 import BusinessModel.Trading.*;
 import java.util.*;
-import BusinessModel.Assets.*;
 import Data.UserDAO;
 
 public class Investor extends User {
@@ -17,35 +16,16 @@ public class Investor extends User {
 
 	public Investor() {
 		super();
+		this.credit = 0.0;
+		this.portfolio = new Portfolio();
 	}
 
 	public Double getCredit(){
 		return credit;
 	}
 
-
 	public List<Integer> getAllCFDids(){
 		return portfolio.getCFDs();
-	}
-
-	public List<Asset> getMarket(){
-		throw new UnsupportedOperationException();
-	}
-
-	public Double allInvested(){
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean closeCFD(int idCFD){
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean openCFD(int idCFD, Double qnt){
-		throw new UnsupportedOperationException();
-	}
-
-	public void addWatchList(int idAsset){
-		throw new UnsupportedOperationException();
 	}
 
 	public void removeWatchList(int idAsset){
@@ -69,10 +49,6 @@ public class Investor extends User {
 
 	public Portfolio getPortfolio() {
 		return portfolio;
-	}
-
-	private void updateDatabase(){
-		(new UserDAO()).save(this);
 	}
 
 	public void addToWatchList(int assetId){

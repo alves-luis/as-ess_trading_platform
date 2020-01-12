@@ -11,12 +11,4 @@ public class Admin extends User {
 		super(id, username, email, password);
 		this.sudopass = sudopass;
 	}
-
-	public boolean loginAdmin(String sudoPass){
-		throw new UnsupportedOperationException();
-	}
-
-	public List<Asset> checkMarket(){
-		throw new UnsupportedOperationException();
-	}
 }

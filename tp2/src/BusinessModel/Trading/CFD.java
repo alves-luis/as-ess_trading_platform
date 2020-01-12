@@ -51,43 +51,15 @@ public class CFD {
 		return takeProfit;
 	}
 
-	public void setTakeProfit(Double takeProfit) {
-		this.takeProfit = takeProfit;
-	}
-
 	public Double getSL() {
 		return stopLoss;
-	}
-
-	public void setStopLoss(Double stopLoss) {
-		this.stopLoss = stopLoss;
-	}
-
-	public void setPriceAcquisition(Double priceAcquisition) {
-		this.priceAcquisition = priceAcquisition;
 	}
 
 	public Double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Double quantity) {
-		this.quantity = quantity;
-	}
-
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
 	public Position getPosition() {
 		return position;
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
-	public void setAssetID(int assetID) {
-		this.assetID = assetID;
 	}
 }

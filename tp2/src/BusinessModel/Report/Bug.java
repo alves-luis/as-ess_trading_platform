@@ -19,6 +19,7 @@ public class Bug {
 	public String getError() {
 		return error;
 	}
+
 	public int getIdClient() {
 		return idClient;
 	}

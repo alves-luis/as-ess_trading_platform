@@ -51,17 +51,17 @@ public class SharedFacade
         {
             case 1:
                 stock = "COMMODITY";
-                assets = essTrading.getAssetsByType(stock).values();
+                assets = essTrading.getAssetsByType(stock);
                 stocks.drawSecondMenu(assets, stock);
                 break;
             case 2:
                 stock = "COIN";
-                assets = essTrading.getAssetsByType(stock).values();
+                assets = essTrading.getAssetsByType(stock);
                 stocks.drawSecondMenu(assets, stock);
                 break;
             case 3:
                 stock = "STOCK";
-                assets = essTrading.getAssetsByType(stock).values();
+                assets = essTrading.getAssetsByType(stock);
                 stocks.drawSecondMenu(assets, stock);
                 break;
         }

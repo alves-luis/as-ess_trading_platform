@@ -1,6 +1,7 @@
 package Presentation.User;
 import BusinessModel.Assets.Asset;
 import BusinessModel.ESSTrading;
+import BusinessModel.ESSTradingUser;
 import BusinessModel.Trading.CFD;
 import Presentation.InputInsert;
 import Services.Observer;
@@ -20,7 +21,7 @@ public class UserFacade implements Observer
     private WatchListMenu watchListMenu;
     private PositionManage positionManage;
     private InputInsert input;
-    private ESSTrading essTrading;
+    private ESSTradingUser essTrading;
     private boolean authenticated;
     private int userID;
 
@@ -42,7 +43,7 @@ public class UserFacade implements Observer
 
     }
 
-    public void setEssTrading(ESSTrading ess)
+    public void setEssTrading(ESSTradingUser ess)
     {
         this.essTrading = ess;
     }
@@ -63,7 +64,7 @@ public class UserFacade implements Observer
     }
 
     public void registerObserver(){
-        essTrading.getBw().addObserver(this);
+        essTrading.addObserver(this);
     }
 
     private void processStartUpInput(int input)
@@ -270,17 +271,17 @@ public class UserFacade implements Observer
         {
             case 1:
                 type = "COMMODITY";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 openSecondStockMenu(assets, type);
                 break;
             case 2:
                 type = "COIN";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 openSecondStockMenu(assets, type);
                 break;
             case 3:
                 type = "STOCK";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 openSecondStockMenu(assets, type);
                 break;
             case 4:

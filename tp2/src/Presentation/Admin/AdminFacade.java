@@ -2,6 +2,7 @@ package Presentation.Admin;
 
 import BusinessModel.Assets.Asset;
 import BusinessModel.ESSTrading;
+import BusinessModel.ESSTradingAdmin;
 import BusinessModel.Report.Bug;
 import Presentation.InputInsert;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class AdminFacade
 {
     private boolean authenticated;
-    private ESSTrading essTrading;
+    private ESSTradingAdmin essTrading;
     private MainMenu mainMenu;
     private Stocks stocksMenu;
     private InputInsert input;
@@ -26,7 +27,7 @@ public class AdminFacade
         this.authenticated = false;
     }
 
-    public void setEssTrading(ESSTrading ess)
+    public void setEssTrading(ESSTradingAdmin ess)
     {
         essTrading = ess;
     }
@@ -60,17 +61,17 @@ public class AdminFacade
         {
             case 1:
                 type = "COMMODITY";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 this.stocksMenu.drawSecondMenu(assets,type);
                 break;
             case 2:
                 type = "COIN";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 this.stocksMenu.drawSecondMenu(assets,type);
                 break;
             case 3:
                 type = "STOCK";
-                assets = essTrading.getAssetsByType(type).values();
+                assets = essTrading.getAssetsByType(type);
                 this.stocksMenu.drawSecondMenu(assets,type);
                 break;
             default:

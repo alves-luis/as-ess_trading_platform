@@ -30,10 +30,6 @@ public class Portfolio {
 		CFDs.add(id);
 	}
 
-	public void removeCFD(int id){
-    CFDs.removeAll(Collections.singleton(id));
-	}
-
 	public List<Integer> getCFDs() {
 		return CFDs;
 	}

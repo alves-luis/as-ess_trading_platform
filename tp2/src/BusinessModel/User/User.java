@@ -18,10 +18,6 @@ public abstract class User {
 
 	}
 
-	public boolean login(String username, String password){
-		throw new UnsupportedOperationException();
-	}
-
 	public int getId() {
 		return id;
 	}
