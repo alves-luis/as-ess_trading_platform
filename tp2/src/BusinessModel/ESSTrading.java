@@ -12,7 +12,7 @@ import Services.Observer;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class ESSTrading implements ESSTradingAdmin {
+public class ESSTrading implements ESSTradingAdmin, ESSTradingUser {
 
     private UsersManager users;
     private AssetsManager assets;
