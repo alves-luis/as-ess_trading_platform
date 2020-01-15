@@ -7,8 +7,7 @@ import java.util.Collection;
 
 public class Stocks implements MainUser {
     @Override
-    public void drawMainMenu()
-    {
+    public void drawMainMenu() {
         StringBuilder builder = new StringBuilder();
 
         builder.append("---------------- Market Menu -------------------\n")
@@ -22,8 +21,7 @@ public class Stocks implements MainUser {
         System.out.println(builder);
     }
 
-    public void drawSecondMenu(Collection<Asset> assets, String type)
-    {
+    public void drawSecondMenu(Collection<Asset> assets, String type) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("-- Market - ")
@@ -32,8 +30,7 @@ public class Stocks implements MainUser {
                 .append("\n")
                 .append("NR. | Item | Value \n");
 
-        for(Asset a : assets)
-        {
+        for (Asset a : assets) {
             builder.append(insertItem(a));
         }
 
@@ -42,8 +39,7 @@ public class Stocks implements MainUser {
         System.out.println(builder);
     }
 
-    private String insertItem(Asset o)
-    {
+    private String insertItem(Asset o) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(o.getId())

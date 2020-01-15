@@ -1,6 +1,5 @@
 package Presentation;
 
-public interface MainUser
-{
+public interface MainUser {
     void drawMainMenu();
 }

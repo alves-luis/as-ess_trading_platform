@@ -4,43 +4,35 @@ import BusinessModel.Assets.Asset;
 import BusinessModel.Trading.CFD;
 import Presentation.MainUser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PortfolioMenu implements MainUser {
 
     @Override
-    public void drawMainMenu()
-    {
+    public void drawMainMenu() {
         StringBuilder builder = new StringBuilder();
         builder.append("--------------- Portfolio Menu -----------------\n")
-               .append("CFD ID | AssetID - Asset Company | Date | Position | Buy Value / Quantity | TP Value | SL Value\n");
+                .append("CFD ID | AssetID - Asset Company | Date | Position | Buy Value / Quantity | TP Value | SL Value\n");
 
         System.out.println(builder.toString());
     }
 
-    public void drawSecondMenu(List<CFD> cfdList, Map<Integer, Asset> assets)
-    {
+    public void drawSecondMenu(List<CFD> cfdList, Map<Integer, Asset> assets) {
         StringBuilder builder = new StringBuilder();
-        String company = "";
+        String company;
 
-        if(cfdList != null)
-        {
-            List<CFD> list = new ArrayList<>();
+        if (cfdList != null) {
+            List<CFD> list;
             list = cfdList;
-            Map<Integer,Asset> map = new HashMap<>();
+            Map<Integer, Asset> map;
             map = assets;
 
-            if(list.size() > 0 && map.size() > 0)
-            {
-                for(CFD a : list)
-                {
-                    if( a != null)
-                    {
+            if (list.size() > 0 && map.size() > 0) {
+                for (CFD a : list) {
+                    if (a != null) {
                         company = map.get(a.getAssetID()).getCompany();
-                        builder.append(insertItem(a,company));
+                        builder.append(insertItem(a, company));
                     }
                 }
             }
@@ -49,8 +41,7 @@ public class PortfolioMenu implements MainUser {
         drawOptionsMenu();
     }
 
-    public void drawOptionsMenu()
-    {
+    public void drawOptionsMenu() {
         StringBuilder builder = new StringBuilder();
         builder.append("------------------------------------------------\n")
                 .append("1. Close Position\n")
@@ -63,8 +54,7 @@ public class PortfolioMenu implements MainUser {
         System.out.println(builder.toString());
     }
 
-    public void drawOptionsTwoMenu()
-    {
+    public void drawOptionsTwoMenu() {
         StringBuilder builder = new StringBuilder();
         builder.append("------------------------------------------------\n")
                 .append("1. See Total Invested\n")
@@ -75,8 +65,7 @@ public class PortfolioMenu implements MainUser {
         System.out.println(builder.toString());
     }
 
-    private String insertItem(CFD o, String assetCompany)
-    {
+    private String insertItem(CFD o, String assetCompany) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(o.getId())

@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +21,19 @@ public class CFDdao implements DAO<CFD> {
         return null;
     }
 
+
+    private CFD createCFDByPosition(ResultSet rs1, Position position) throws SQLException{
+        return (new CFD(rs1.getInt("idCFD"),
+                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
+                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
+                LocalDateTime.parse(rs1.getString("Date")),
+                position, rs1.getInt("Asset_idAsset")));
+    }
+
+
     @Override
     public List<CFD> getAll() {
         List<CFD> cfds = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         try {
             con = connect();
             if(con != null) {
@@ -34,17 +42,9 @@ public class CFDdao implements DAO<CFD> {
 
                 while(rs1.next()) {
                     if(rs1.getString("Position").equals("short")) {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date")),
-                                Position.SHORT, rs1.getInt("Asset_idAsset")));
+                        cfds.add(createCFDByPosition(rs1, Position.SHORT));
                     } else {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date")),
-                                Position.LONG, rs1.getInt("Asset_idAsset")));
+                        cfds.add(createCFDByPosition(rs1, Position.LONG));
                     }
                 }
             }
@@ -61,72 +61,11 @@ public class CFDdao implements DAO<CFD> {
 
     }
 
-    public List<CFD> getAllByPortfolio(int idPortfolio) {
-        List<CFD> cfds = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        try {
-            con = connect();
-            if(con != null) {
-                PreparedStatement pStm1 = con.prepareStatement("select * from CFD where Portfolio_idPortfolio=?");
-                pStm1.setInt(1, idPortfolio);
-                ResultSet rs1 = pStm1.executeQuery();
+    @Override
+    public void update(CFD cfd) {
 
-                while(rs1.next()) {
-                    if(rs1.getString("Position").equals("short")) {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date"), formatter),
-                                Position.SHORT, rs1.getInt("Asset_idAsset")));
-                    } else {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date"), formatter),
-                                Position.LONG, rs1.getInt("Asset_idAsset")));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            Connect.close(con);
-        }
-        return cfds;
     }
 
-    public List<CFD> getAllWithTPSL(){
-        List<CFD> cfds = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        try {
-            con = connect();
-            if(con != null) {
-                PreparedStatement pStm1 = con.prepareStatement("select * from CFD where StopLoss>0 and TakeProfit>0 ");
-                ResultSet rs1 = pStm1.executeQuery();
-
-                while(rs1.next()) {
-                    if(rs1.getString("Position").equals("short")) {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date"), formatter),
-                                Position.SHORT, rs1.getInt("Asset_idAsset")));
-                    } else {
-                        cfds.add(new CFD(rs1.getInt("idCFD"),
-                                rs1.getDouble("TakeProfit"), rs1.getDouble("StopLoss"),
-                                rs1.getDouble("AquisitionPrice"), rs1.getDouble("Quantity"),
-                                LocalDateTime.parse(rs1.getString("Date"), formatter),
-                                Position.LONG, rs1.getInt("Asset_idAsset")));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            Connect.close(con);
-        }
-        return cfds;
-    }
 
     public void saveToPortfolio(CFD cfd, int idPortfolio) {
         try {
@@ -158,10 +97,7 @@ public class CFDdao implements DAO<CFD> {
             Connect.close(con);
         }
     }
-    @Override
-    public void update(CFD cfd) {
 
-    }
 
     @Override
     public void delete(CFD cfd) {

@@ -7,23 +7,20 @@ import java.util.List;
 
 public class WatchListMenu implements MainUser {
     @Override
-    public void drawMainMenu()
-    {
+    public void drawMainMenu() {
         StringBuilder builder = new StringBuilder();
         builder.append("---------------- WatchList Menu ----------------\n");
 
         System.out.println(builder);
     }
 
-    public void drawWatchListMenu(List<Asset> assets)
-    {
+    public void drawWatchListMenu(List<Asset> assets) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("NR. | Item | Value \n");
 
 
-        for(Asset a : assets)
-        {
+        for (Asset a : assets) {
             builder.append(insertItem(a));
         }
 
@@ -36,8 +33,7 @@ public class WatchListMenu implements MainUser {
         System.out.println(builder);
     }
 
-    private String insertItem(Asset o)
-    {
+    private String insertItem(Asset o) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(o.getId())
@@ -50,13 +46,11 @@ public class WatchListMenu implements MainUser {
         return builder.toString();
     }
 
-    public void drawRemoveItemMenu()
-    {
+    public void drawRemoveItemMenu() {
         System.out.println("Insert the Asset ID to remove (-1 to cancel):\n");
     }
 
-    public void addToWatchListMenu()
-    {
+    public void addToWatchListMenu() {
         System.out.println("Insert the Asset ID to add: \n (-1 to cancel)\n");
     }
 }

@@ -3,12 +3,9 @@ package Presentation.Shared;
 import BusinessModel.Assets.Asset;
 import BusinessModel.ESSTrading;
 import Presentation.InputInsert;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
-public class SharedFacade
-{
+public class SharedFacade {
     private Registration registration;
     private StartupMenu startMenu;
     private Login login;
@@ -16,8 +13,7 @@ public class SharedFacade
     private InputInsert input;
     private ESSTrading essTrading;
 
-    public SharedFacade()
-    {
+    public SharedFacade() {
         registration = new Registration();
         startMenu = new StartupMenu();
         stocks = new Stocks();
@@ -25,14 +21,12 @@ public class SharedFacade
         login = new Login();
     }
 
-    public void setEssTrading(ESSTrading ess)
-    {
+    public void setEssTrading(ESSTrading ess) {
         essTrading = ess;
     }
 
     // START UP MENU - opens start up menu
-    public int openStartUpMenu()
-    {
+    public int openStartUpMenu() {
         int option;
         startMenu.drawMainMenu();
         option = input.getIntInput();
@@ -40,15 +34,13 @@ public class SharedFacade
     }
 
     // STOCK MENU
-    public void openStocksMenu()
-    {
-        Collection<Asset> assets = new ArrayList<>();
-        String stock = "";
+    public void openStocksMenu() {
+        Collection<Asset> assets;
+        String stock;
         stocks.drawMainMenu();
         int stockType = input.getIntInput();
 
-        switch (stockType)
-        {
+        switch (stockType) {
             case 1:
                 stock = "COMMODITY";
                 assets = essTrading.getAssetsByType(stock);
@@ -66,15 +58,13 @@ public class SharedFacade
                 break;
         }
     }
-        
+
     // LOGIN MENU - opens login menu
-    public void openLoginMenu()
-    {
+    public void openLoginMenu() {
         login.drawMainMenu();
     }
 
-    public void openRegistrationMenu()
-    {
+    public void openRegistrationMenu() {
         registration.drawMainMenu();
     }
 
@@ -86,8 +76,7 @@ public class SharedFacade
         return input.getStringInput();
     }
 
-    public void drawPasswordOutput()
-    {
+    public void drawPasswordOutput() {
         this.login.drawPasswordMenu();
     }
 }

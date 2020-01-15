@@ -2,9 +2,6 @@ package Data;
 
 import BusinessModel.Assets.Asset;
 import BusinessModel.Assets.AssetType;
-import BusinessModel.Trading.Portfolio;
-import BusinessModel.User.Investor;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +17,11 @@ public class AssetDAO implements DAO<Asset> {
         return null;
     }
 
+    private Asset createAssetByType(ResultSet rs, AssetType type) throws SQLException{
+        return (new Asset(rs.getInt("idAsset"), rs.getDouble("Value"),
+              rs.getString("Company"), type));
+    }
+
     @Override
     public List<Asset> getAll() {
         List<Asset> assets = new ArrayList<>();
@@ -29,17 +31,13 @@ public class AssetDAO implements DAO<Asset> {
                 PreparedStatement pStm = con.prepareStatement("select * from Asset");
                 ResultSet rs = pStm.executeQuery();
                 while(rs.next()) {
-                    //TODO verificar que é assim que se vai buscar um enum ou mudar na BD o tipo
                     if(rs.getString("Type").equals("coin")){
-                        assets.add(new Asset(rs.getInt("idAsset"), rs.getDouble("Value"),
-                              rs.getString("Company"), AssetType.COIN));
+                        assets.add(createAssetByType(rs, AssetType.COIN));
                     } else{
                         if(rs.getString("Type").equals("stock")){
-                          assets.add(new Asset(rs.getInt("idAsset"), rs.getDouble("Value"),
-                                   rs.getString("Company"), AssetType.STOCK));
+                          assets.add(createAssetByType(rs, AssetType.STOCK));
                         } else {
-                            assets.add(new Asset(rs.getInt("idAsset"), rs.getDouble("Value"),
-                                    rs.getString("Company"), AssetType.COMMODITY));
+                            assets.add(createAssetByType(rs, AssetType.COMMODITY));
                         }
                     }
                 }
@@ -52,6 +50,21 @@ public class AssetDAO implements DAO<Asset> {
         return assets;
     }
 
+    private void setStringByType(PreparedStatement pStm, int position, Asset asset) throws SQLException{
+
+        if(asset.getType() == AssetType.COIN){
+            pStm.setString(position, "coin");
+        }
+        if(asset.getType() == AssetType.COMMODITY){
+            pStm.setString(position, "commodity");
+        }
+        if(asset.getType() == AssetType.STOCK){
+            pStm.setString(position, "stock");
+        }
+
+    }
+
+
     @Override
     public void save(Asset asset) {
         try {
@@ -60,16 +73,7 @@ public class AssetDAO implements DAO<Asset> {
                 PreparedStatement pStm = con.prepareStatement("insert into Asset VALUES (?,?,?,?)");
                 pStm.setInt(1,asset.getId());
                 pStm.setString(2,asset.getCompany());
-
-                if(asset.getType() == AssetType.COIN){
-                    pStm.setString(3, "coin");
-                }
-                if(asset.getType() == AssetType.COMMODITY){
-                    pStm.setString(3, "commodity");
-                }
-                if(asset.getType() == AssetType.STOCK){
-                    pStm.setString(3, "stock");
-                }
+                setStringByType(pStm,3,asset);
                 pStm.setDouble(4, asset.getValue());
 
                 pStm.execute();
@@ -90,18 +94,9 @@ public class AssetDAO implements DAO<Asset> {
                 PreparedStatement pStm = con.prepareStatement("update  Asset set Company=?, Type=?, Value=? " +
                                                                  "where idAsset=?");
                 pStm.setString(1,asset.getCompany());
-                if(asset.getType() == AssetType.COIN){
-                    pStm.setString(2, "coin");
-                }
-                if(asset.getType() == AssetType.COMMODITY){
-                    pStm.setString(2, "commodity");
-                }
-                if(asset.getType() == AssetType.STOCK){
-                    pStm.setString(2, "stock");
-                }
+                setStringByType(pStm,2,asset);
                 pStm.setDouble(3, asset.getValue());
                 pStm.setInt(4,asset.getId());
-
                 pStm.execute();
 
             }
@@ -116,4 +111,5 @@ public class AssetDAO implements DAO<Asset> {
     public void delete(Asset asset) {
 
     }
+
 }

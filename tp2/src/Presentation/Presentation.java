@@ -47,8 +47,7 @@ public class Presentation {
         }
     }
 
-    public void openStocksMenu()
-    {
+    public void openStocksMenu() {
         sharedFacade.openStocksMenu();
         openStartUpMenu();
     }
@@ -98,8 +97,7 @@ public class Presentation {
     }
 
     private void saveNewUser(String emailInput, String passwordInput) {
-        if (essTrading.saveNewUser(emailInput,passwordInput))
-        {
+        if (essTrading.saveNewUser(emailInput, passwordInput)) {
             System.out.println("Registed with Success!\n");
         } else {
             System.out.println("User not registred\n");

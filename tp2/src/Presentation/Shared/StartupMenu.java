@@ -2,11 +2,9 @@ package Presentation.Shared;
 
 import Presentation.MainUser;
 
-public class StartupMenu implements MainUser
-{
+public class StartupMenu implements MainUser {
     @Override
-    public void drawMainMenu()
-    {
+    public void drawMainMenu() {
         StringBuilder builder = new StringBuilder();
         builder.append("----------------- ESS TRADING ------------------\n")
                 .append("1. See Markets\n")
